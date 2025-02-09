@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { assets } from "../assets/assets_frontend/assets";
+import { assets } from "../assets/assets";
 
 function MyProfile() {
   const [userData, setUserData] = useState({
