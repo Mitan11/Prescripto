@@ -18,13 +18,107 @@ function AddDoctor() {
   const [degree, setDegree] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
+  const [errors, setErrors] = useState({
+    docImg: "",
+    name: "",
+    email: "",
+    password: "",
+    fees: "",
+    degree: "",
+    address1: "",
+    address2: "",
+    about: "",
+  });
 
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const { backendUrl, aToken } = useContext(AdminContext);
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      docImg: "",
+      name: "",
+      email: "",
+      password: "",
+      fees: "",
+      degree: "",
+      address1: "",
+      address2: "",
+      about: "",
+    };
+
+    // Image validation
+    if (!docImg) {
+      newErrors.docImg = "Doctor image is required";
+      isValid = false;
+    }
+
+    // Name validation
+    if (!name.trim()) {
+      newErrors.name = "Doctor name is required";
+      isValid = false;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Invalid email format";
+      isValid = false;
+    }
+
+    // Password validation
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+      isValid = false;
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+      isValid = false;
+    }
+
+    // Fees validation
+    if (!fees.trim()) {
+      newErrors.fees = "Fees is required";
+      isValid = false;
+    } else if (isNaN(fees) || Number(fees) <= 0) {
+      newErrors.fees = "Invalid fee amount";
+      isValid = false;
+    }
+
+    // Degree validation
+    if (!degree.trim()) {
+      newErrors.degree = "Education qualification is required";
+      isValid = false;
+    }
+
+    // Address validation
+    if (!address1.trim()) {
+      newErrors.address1 = "Address line 1 is required";
+      isValid = false;
+    }
+    if (!address2.trim()) {
+      newErrors.address2 = "Address line 2 is required";
+      isValid = false;
+    }
+
+    // About validation
+    if (!about.trim()) {
+      newErrors.about = "About doctor is required";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
     try {
       if (!docImg) {
         return toast.error("Image Not Selected");
@@ -55,18 +149,18 @@ function AddDoctor() {
       if (data.success) {
         toast.success(data.message);
         console.log(data.message);
-        setDocImg(false)
-        setName('')
-        setEmail('')
-        setPassword('')
-        setAddress1('')
-        setAddress2('')
-        setDegree('')
-        setAbout('')
-        setFees('')
-        setSpeciality('General physician')
-        setExperience('1 Year')
-        setShowPassword(false)
+        setDocImg(false);
+        setName("");
+        setEmail("");
+        setPassword("");
+        setAddress1("");
+        setAddress2("");
+        setDegree("");
+        setAbout("");
+        setFees("");
+        setSpeciality("General physician");
+        setExperience("1 Year");
+        setShowPassword(false);
       } else {
         toast.error(data.message);
         console.log(data.message);
@@ -74,8 +168,8 @@ function AddDoctor() {
     } catch (error) {
       toast.error(error.message);
       console.log(error);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,7 +181,9 @@ function AddDoctor() {
         <div className="flex items-center gap-4 mb-8 text-gray-500">
           <label htmlFor="doc-img" className="cursor-pointer">
             <img
-              className="w-16 h-16 object-cover bg-gray-100 rounded-full border-2 border-dashed border-gray-300 hover:border-primary transition-all"
+              className={`w-16 h-16 object-cover bg-gray-100 rounded-full border-2 border-dashed hover:border-primary transition-all ${
+                errors.docImg ? "border-red-500" : "border-gray-300"
+              } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
               src={docImg ? URL.createObjectURL(docImg) : assets.upload_area}
               alt="Doctor upload"
             />
@@ -96,12 +192,20 @@ function AddDoctor() {
             type="file"
             id="doc-img"
             hidden
-            onChange={(e) => setDocImg(e.target.files[0])}
+            onChange={(e) => {
+              setDocImg(e.target.files[0]);
+              if (errors.docImg) {
+                setErrors({ ...errors, docImg: "" });
+              }
+            }}
             disabled={loading}
           />
           <p className="text-sm">
             Upload doctor <br /> picture
           </p>
+          {errors.docImg && (
+            <p className="text-red-500 text-sm">{errors.docImg}</p>
+          )}
         </div>
 
         {/* Form Fields */}
@@ -112,40 +216,67 @@ function AddDoctor() {
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Doctor name</label>
               <input
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                  errors.name ? "border-red-500" : "border-gray-300"
+                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
                 type="text"
                 placeholder="Name"
-                required
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (errors.name) {
+                    setErrors({ ...errors, name: "" });
+                  }
+                }}
                 disabled={loading}
               />
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name}</p>
+              )}
             </div>
             {/* Doctor Email */}
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Doctor email</label>
               <input
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                type="email"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                  errors.email ? "border-red-500" : "border-gray-300"
+                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                type="text"
                 placeholder="Email"
-                required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (errors.email) {
+                    setErrors({ ...errors, email: "" });
+                  }
+                }}
                 disabled={loading}
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
             </div>
             {/* Doctor Password */}
             <div className="flex flex-col gap-1 relative">
               <label className="text-sm font-medium">Doctor password</label>
               <input
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all pr-10"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all pr-10 ${
+                  errors.password ? "border-red-500" : "border-gray-300"
+                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
                 type={showPassword ? "text" : "password"} // Toggle input type
                 placeholder="Password"
-                required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (errors.password) {
+                    setErrors({ ...errors, password: "" });
+                  }
+                }}
                 disabled={loading}
               />
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password}</p>
+              )}
               {/* Eye Icon for Toggle */}
               <button
                 type="button"
@@ -159,9 +290,16 @@ function AddDoctor() {
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Experience</label>
               <select
-                className="w-full px-4 py-2  border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all "
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                  errors.experience ? "border-red-500" : "border-gray-300"
+                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
                 value={experience}
-                onChange={(e) => setExperience(e.target.value)}
+                onChange={(e) => {
+                  setExperience(e.target.value);
+                  if (errors.experience) {
+                    setErrors({ ...errors, experience: "" });
+                  }
+                }}
                 disabled={loading}
               >
                 {[...Array(10)].map((_, i) => (
@@ -170,18 +308,31 @@ function AddDoctor() {
                   </option>
                 ))}
               </select>
+              {errors.experience && (
+                <p className="text-red-500 text-sm">{errors.experience}</p>
+              )}
             </div>
             {/* Fees */}
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Fees</label>
               <input
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                  errors.fees ? "border-red-500" : "border-gray-300"
+                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
                 type="number"
                 placeholder="Fees"
                 value={fees}
-                onChange={(e) => setFees(e.target.value)}
+                onChange={(e) => {
+                  setFees(e.target.value);
+                  if (errors.fees) {
+                    setErrors({ ...errors, fees: "" });
+                  }
+                }}
                 disabled={loading}
               />
+              {errors.fees && (
+                <p className="text-red-500 text-sm">{errors.fees}</p>
+              )}
             </div>
           </div>
 
@@ -191,9 +342,16 @@ function AddDoctor() {
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Speciality</label>
               <select
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                  errors.speciality ? "border-red-500" : "border-gray-300"
+                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
                 value={speciality}
-                onChange={(e) => setSpeciality(e.target.value)}
+                onChange={(e) => {
+                  setSpeciality(e.target.value);
+                  if (errors.speciality) {
+                    setErrors({ ...errors, speciality: "" });
+                  }
+                }}
                 disabled={loading}
               >
                 <option value="General physician">General physician</option>
@@ -203,41 +361,71 @@ function AddDoctor() {
                 <option value="Neurologist">Neurologist</option>
                 <option value="Gastroenterologist">Gastroenterologist</option>
               </select>
+              {errors.speciality && (
+                <p className="text-red-500 text-sm">{errors.speciality}</p>
+              )}
             </div>
             {/* Education */}
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Education</label>
               <input
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                  errors.degree ? "border-red-500" : "border-gray-300"
+                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
                 type="text"
                 placeholder="Education"
-                required
                 value={degree}
-                onChange={(e) => setDegree(e.target.value)}
+                onChange={(e) => {
+                  setDegree(e.target.value);
+                  if (errors.degree) {
+                    setErrors({ ...errors, degree: "" });
+                  }
+                }}
                 disabled={loading}
               />
+              {errors.degree && (
+                <p className="text-red-500 text-sm">{errors.degree}</p>
+              )}
             </div>
             {/* Address */}
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Address</label>
               <input
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                  errors.address1 ? "border-red-500" : "border-gray-300"
+                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
                 type="text"
                 placeholder="Address1"
-                required
                 value={address1}
-                onChange={(e) => setAddress1(e.target.value)}
+                onChange={(e) => {
+                  setAddress1(e.target.value);
+                  if (errors.address1) {
+                    setErrors({ ...errors, address1: "" });
+                  }
+                }}
                 disabled={loading}
               />
               <input
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                  errors.address2 ? "border-red-500" : "border-gray-300"
+                } ${loading ? 'cursor-not-allowed opacity-50' : ''} `}
                 type="text"
                 placeholder="Address2"
-                required
                 value={address2}
-                onChange={(e) => setAddress2(e.target.value)}
+                onChange={(e) => {
+                  setAddress2(e.target.value);
+                  if (errors.address2) {
+                    setErrors({ ...errors, address2: "" });
+                  }
+                }}
                 disabled={loading}
               />
+              {errors.address1 && (
+                <p className="text-red-500 text-sm">{errors.address1}</p>
+              )}
+              {errors.address2 && (
+                <p className="text-red-500 text-sm">{errors.address2}</p>
+              )}
             </div>
           </div>
         </div>
@@ -248,21 +436,38 @@ function AddDoctor() {
             About Doctor
           </label>
           <textarea
-            className="w-full px-4 pt-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none text-gray-600"
+            className={`w-full px-4 pt-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none text-gray-600 ${
+              errors.about ? "border-red-500" : "border-gray-300"
+            } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
             rows={5}
             placeholder="Write about doctor"
             value={about}
-            onChange={(e) => setAbout(e.target.value)}
+            onChange={(e) => {
+              setAbout(e.target.value);
+              if (errors.about) {
+                setErrors({ ...errors, about: "" });
+              }
+            }}
             disabled={loading}
           ></textarea>
+          {errors.about && (
+            <p className="text-red-500 text-sm">{errors.about}</p>
+          )}
         </div>
 
         <button
           type="submit"
-          className="bg-primary px-10 py-3 mt-4 text-white rounded-full hover:bg-primary/90 font-medium transition-all cursor-pointer"
+          className={`bg-primary px-10 py-3 mt-4 text-white rounded-full hover:bg-primary/90 font-medium transition-all flex items-center justify-center space-x-2 ${loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
           disabled={loading}
         >
-          {loading ? "Submitting..." : "Add Doctor"}
+          {loading ? (
+            <>
+              <div className="w-5 h-5 border-t-2 border-r-2 border-white rounded-full animate-spin mr-2"></div>
+              <span>Adding Doctor...</span>
+            </>
+          ) : (
+            "Add Doctor"
+          )}
         </button>
       </div>
     </form>
