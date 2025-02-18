@@ -1,7 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import "tailwindcss";
+@plugin "daisyui";
+
+*{
+    font-family: 'Outfit', sans-serif;
+}
 
 @theme {
     --color-primary: #5F6FFF;
 }
 
-::-webkit-scrollbar{@apply hidden}
+::-webkit-scrollbar{
+    @apply hidden
+}

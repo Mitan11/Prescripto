@@ -4,6 +4,7 @@ import { AdminContext } from "../../context/AdminContext";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 function AddDoctor() {
   const [docImg, setDocImg] = useState(false);
@@ -173,19 +174,63 @@ function AddDoctor() {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.3 },
+    },
+  };
+
+  const errorVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { type: "spring", stiffness: 200 },
+    },
+  };
+
   return (
     <form className="m-5 w-full" onSubmit={onSubmitHandler}>
-      <p className="mb-3 text-lg font-medium">Add Doctor</p>
-      <div className="bg-white px-8 py-8 border border-gray-300 rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll shadow">
+      <motion.p
+        className="mb-3 text-xl font-medium"
+        variants={itemVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        Add Doctor
+      </motion.p>
+      <motion.div
+        className="bg-white px-8 py-8 border border-gray-300 rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll shadow"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Upload Section */}
-        <div className="flex items-center gap-4 mb-8 text-gray-500">
+        <motion.div
+          className="flex items-center gap-4 mb-8 text-gray-500"
+          variants={itemVariants}
+        >
           <label htmlFor="doc-img" className="cursor-pointer">
-            <img
+            <motion.img
               className={`w-16 h-16 object-cover bg-gray-100 rounded-full border-2 border-dashed hover:border-primary transition-all ${
                 errors.docImg ? "border-red-500" : "border-gray-300"
-              } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+              } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
               src={docImg ? URL.createObjectURL(docImg) : assets.upload_area}
               alt="Doctor upload"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             />
           </label>
           <input
@@ -204,21 +249,34 @@ function AddDoctor() {
             Upload doctor <br /> picture
           </p>
           {errors.docImg && (
-            <p className="text-red-500 text-sm">{errors.docImg}</p>
+            <motion.p
+              className="text-red-500 text-sm"
+              variants={errorVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {errors.docImg}
+            </motion.p>
           )}
-        </div>
+        </motion.div>
 
         {/* Form Fields */}
-        <div className="flex flex-col lg:flex-row items-start gap-10 text-gray-600">
+        <motion.div
+          className="flex flex-col lg:flex-row items-start gap-10 text-gray-600"
+          variants={containerVariants}
+        >
           {/* Left Column */}
-          <div className="w-full lg:flex-1 flex flex-col gap-4">
+          <motion.div
+            className="w-full lg:flex-1 flex flex-col gap-4"
+            variants={containerVariants}
+          >
             {/* Doctor Name */}
-            <div className="flex flex-col gap-1">
+            <motion.div className="flex flex-col gap-1" variants={itemVariants}>
               <label className="text-sm font-medium">Doctor name</label>
-              <input
+              <motion.input
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
                   errors.name ? "border-red-500" : "border-gray-300"
-                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
                 type="text"
                 placeholder="Name"
                 value={name}
@@ -229,18 +287,27 @@ function AddDoctor() {
                   }
                 }}
                 disabled={loading}
+                whileFocus={{ scale: 1.01 }}
               />
               {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name}</p>
+                <motion.p
+                  className="text-red-500 text-sm"
+                  variants={errorVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {errors.name}
+                </motion.p>
               )}
-            </div>
+            </motion.div>
+
             {/* Doctor Email */}
-            <div className="flex flex-col gap-1">
+            <motion.div className="flex flex-col gap-1" variants={itemVariants}>
               <label className="text-sm font-medium">Doctor email</label>
-              <input
+              <motion.input
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
                   errors.email ? "border-red-500" : "border-gray-300"
-                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
                 type="text"
                 placeholder="Email"
                 value={email}
@@ -251,19 +318,31 @@ function AddDoctor() {
                   }
                 }}
                 disabled={loading}
+                whileFocus={{ scale: 1.01 }}
               />
               {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
+                <motion.p
+                  className="text-red-500 text-sm"
+                  variants={errorVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {errors.email}
+                </motion.p>
               )}
-            </div>
+            </motion.div>
+
             {/* Doctor Password */}
-            <div className="flex flex-col gap-1 relative">
+            <motion.div
+              className="flex flex-col gap-1 relative"
+              variants={itemVariants}
+            >
               <label className="text-sm font-medium">Doctor password</label>
-              <input
+              <motion.input
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all pr-10 ${
                   errors.password ? "border-red-500" : "border-gray-300"
-                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
-                type={showPassword ? "text" : "password"} // Toggle input type
+                } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => {
@@ -273,26 +352,37 @@ function AddDoctor() {
                   }
                 }}
                 disabled={loading}
+                whileFocus={{ scale: 1.01 }}
               />
               {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password}</p>
+                <motion.p
+                  className="text-red-500 text-sm"
+                  variants={errorVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {errors.password}
+                </motion.p>
               )}
               {/* Eye Icon for Toggle */}
-              <button
+              <motion.button
                 type="button"
                 className="absolute right-3 top-9.5 text-gray-400 hover:text-gray-600"
                 onClick={() => setShowPassword(!showPassword)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
+
             {/* Experience */}
-            <div className="flex flex-col gap-1">
+            <motion.div className="flex flex-col gap-1" variants={itemVariants}>
               <label className="text-sm font-medium">Experience</label>
-              <select
+              <motion.select
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
                   errors.experience ? "border-red-500" : "border-gray-300"
-                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
                 value={experience}
                 onChange={(e) => {
                   setExperience(e.target.value);
@@ -301,24 +391,33 @@ function AddDoctor() {
                   }
                 }}
                 disabled={loading}
+                whileFocus={{ scale: 1.01 }}
               >
                 {[...Array(10)].map((_, i) => (
                   <option key={i} value={`${i + 1} Year`}>
                     {i + 1} Year{i > 0 ? "s" : ""}
                   </option>
                 ))}
-              </select>
+              </motion.select>
               {errors.experience && (
-                <p className="text-red-500 text-sm">{errors.experience}</p>
+                <motion.p
+                  className="text-red-500 text-sm"
+                  variants={errorVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {errors.experience}
+                </motion.p>
               )}
-            </div>
+            </motion.div>
+
             {/* Fees */}
-            <div className="flex flex-col gap-1">
+            <motion.div className="flex flex-col gap-1" variants={itemVariants}>
               <label className="text-sm font-medium">Fees</label>
-              <input
+              <motion.input
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
                   errors.fees ? "border-red-500" : "border-gray-300"
-                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
                 type="number"
                 placeholder="Fees"
                 value={fees}
@@ -329,22 +428,33 @@ function AddDoctor() {
                   }
                 }}
                 disabled={loading}
+                whileFocus={{ scale: 1.01 }}
               />
               {errors.fees && (
-                <p className="text-red-500 text-sm">{errors.fees}</p>
+                <motion.p
+                  className="text-red-500 text-sm"
+                  variants={errorVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {errors.fees}
+                </motion.p>
               )}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right Column */}
-          <div className="w-full lg:flex-1 flex flex-col gap-4">
+          <motion.div
+            className="w-full lg:flex-1 flex flex-col gap-4"
+            variants={containerVariants}
+          >
             {/* Speciality */}
-            <div className="flex flex-col gap-1">
+            <motion.div className="flex flex-col gap-1" variants={itemVariants}>
               <label className="text-sm font-medium">Speciality</label>
-              <select
+              <motion.select
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
                   errors.speciality ? "border-red-500" : "border-gray-300"
-                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
                 value={speciality}
                 onChange={(e) => {
                   setSpeciality(e.target.value);
@@ -353,6 +463,7 @@ function AddDoctor() {
                   }
                 }}
                 disabled={loading}
+                whileFocus={{ scale: 1.01 }}
               >
                 <option value="General physician">General physician</option>
                 <option value="Gynecologist">Gynecologist</option>
@@ -360,18 +471,26 @@ function AddDoctor() {
                 <option value="Pediatricians">Pediatricians</option>
                 <option value="Neurologist">Neurologist</option>
                 <option value="Gastroenterologist">Gastroenterologist</option>
-              </select>
+              </motion.select>
               {errors.speciality && (
-                <p className="text-red-500 text-sm">{errors.speciality}</p>
+                <motion.p
+                  className="text-red-500 text-sm"
+                  variants={errorVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {errors.speciality}
+                </motion.p>
               )}
-            </div>
+            </motion.div>
+
             {/* Education */}
-            <div className="flex flex-col gap-1">
+            <motion.div className="flex flex-col gap-1" variants={itemVariants}>
               <label className="text-sm font-medium">Education</label>
-              <input
+              <motion.input
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
                   errors.degree ? "border-red-500" : "border-gray-300"
-                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
                 type="text"
                 placeholder="Education"
                 value={degree}
@@ -382,18 +501,27 @@ function AddDoctor() {
                   }
                 }}
                 disabled={loading}
+                whileFocus={{ scale: 1.01 }}
               />
               {errors.degree && (
-                <p className="text-red-500 text-sm">{errors.degree}</p>
+                <motion.p
+                  className="text-red-500 text-sm"
+                  variants={errorVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {errors.degree}
+                </motion.p>
               )}
-            </div>
+            </motion.div>
+
             {/* Address */}
-            <div className="flex flex-col gap-1">
+            <motion.div className="flex flex-col gap-3" variants={itemVariants}>
               <label className="text-sm font-medium">Address</label>
-              <input
+              <motion.input
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
                   errors.address1 ? "border-red-500" : "border-gray-300"
-                } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+                } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
                 type="text"
                 placeholder="Address1"
                 value={address1}
@@ -404,11 +532,22 @@ function AddDoctor() {
                   }
                 }}
                 disabled={loading}
+                whileFocus={{ scale: 1.01 }}
               />
-              <input
+              {errors.address1 && (
+                <motion.p
+                  className="text-red-500 text-sm"
+                  variants={errorVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {errors.address1}
+                </motion.p>
+              )}
+              <motion.input
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
                   errors.address2 ? "border-red-500" : "border-gray-300"
-                } ${loading ? 'cursor-not-allowed opacity-50' : ''} `}
+                } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
                 type="text"
                 placeholder="Address2"
                 value={address2}
@@ -419,26 +558,31 @@ function AddDoctor() {
                   }
                 }}
                 disabled={loading}
+                whileFocus={{ scale: 1.01 }}
               />
-              {errors.address1 && (
-                <p className="text-red-500 text-sm">{errors.address1}</p>
-              )}
               {errors.address2 && (
-                <p className="text-red-500 text-sm">{errors.address2}</p>
+                <motion.p
+                  className="text-red-500 text-sm"
+                  variants={errorVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {errors.address2}
+                </motion.p>
               )}
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         {/* About Doctor */}
-        <div>
+        <motion.div variants={itemVariants}>
           <label className="block text-sm font-medium mt-4 text-gray-500 mb-2">
             About Doctor
           </label>
-          <textarea
+          <motion.textarea
             className={`w-full px-4 pt-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none text-gray-600 ${
               errors.about ? "border-red-500" : "border-gray-300"
-            } ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+            } ${loading ? "cursor-not-allowed opacity-50" : ""}`}
             rows={5}
             placeholder="Write about doctor"
             value={about}
@@ -449,15 +593,27 @@ function AddDoctor() {
               }
             }}
             disabled={loading}
-          ></textarea>
+            whileFocus={{ scale: 1.01 }}
+          />
           {errors.about && (
-            <p className="text-red-500 text-sm">{errors.about}</p>
+            <motion.p
+              className="text-red-500 text-sm"
+              variants={errorVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {errors.about}
+            </motion.p>
           )}
-        </div>
+        </motion.div>
 
-        <button
+        <motion.button
           type="submit"
-          className={`bg-primary px-10 py-3 mt-4 text-white rounded-full hover:bg-primary/90 font-medium transition-all flex items-center justify-center space-x-2 ${loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+          className={`bg-primary focus:bg-primary/90 focus:outline-none px-10 py-3 mt-4 text-white rounded-full hover:bg-primary/90 font-medium transition-all flex items-center justify-center space-x-2 ${
+            loading ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+          }`}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           disabled={loading}
         >
           {loading ? (
@@ -468,8 +624,8 @@ function AddDoctor() {
           ) : (
             "Add Doctor"
           )}
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     </form>
   );
 }
