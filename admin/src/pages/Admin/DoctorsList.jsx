@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import NoDataFound from "../../components/NoDataFound";
 import SkeletonCard from "../../components/SkeletonCard";
+import { motion } from "framer-motion";
 
 function DoctorsList() {
   const { doctors, getAllDoctors, aToken, changeAvailability } =
@@ -15,9 +16,26 @@ function DoctorsList() {
     }
   }, [aToken]);
 
+  // Motion variants for each card (Lazy Scroll Effect)
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
   return (
     <div className="p-5 max-h-[90vh] overflow-y-scroll w-full">
-      <h1 className="text-xl font-medium">Doctors List</h1>
+      <motion.h1
+        className="text-xl font-medium"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
+      >
+        Doctors List
+      </motion.h1>
+
       <div className="w-full flex flex-wrap gap-4 pt-5 gap-y-6">
         {loading ? (
           Array(8)
@@ -25,9 +43,13 @@ function DoctorsList() {
             .map((_, i) => <SkeletonCard key={i} />)
         ) : doctors?.length ? (
           doctors.map((item) => (
-            <div
+            <motion.div
               className="border border-indigo-200 rounded-xl max-w-56 overflow-hidden cursor-pointer group"
               key={item._id}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
             >
               <img
                 className="bg-indigo-50 group-hover:bg-primary transition-all duration-500"
@@ -48,7 +70,7 @@ function DoctorsList() {
                   <p>{item.available ? "Available" : "Not Available"}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))
         ) : (
           <NoDataFound />

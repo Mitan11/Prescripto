@@ -10,6 +10,13 @@
     --color-primary: #5F6FFF;
 }
 
-::-webkit-scrollbar{
-    @apply hidden
-}
+/* Hide the scrollbar */
+*::-webkit-scrollbar {
+    display: none;
+  }
+  
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
