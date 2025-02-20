@@ -49,7 +49,7 @@ function DoctorsList() {
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: false, amount: 0.3 }}
             >
               <img
                 className="bg-indigo-50 group-hover:bg-primary transition-all duration-500"

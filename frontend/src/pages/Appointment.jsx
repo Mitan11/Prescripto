@@ -3,6 +3,10 @@ import { data, useParams } from "react-router";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import RelatedDoctors from "../components/RelatedDoctors";
+import SkeletonDoctorInfo from "../components/SkeletonDoctorInfo";
+import { motion, AnimatePresence } from "framer-motion";
+import SkeletonBookingSlots from "../components/SkeletonBookingSlots";
+import SkeletonTimeSlots from "../components/SkeletonTimeSlots";
 
 function Appointment() {
   const { docId } = useParams();
@@ -74,97 +78,205 @@ function Appointment() {
   useEffect(() => {
     console.log(docSlots);
   }, [docSlots]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { type: "spring", stiffness: 120, damping: 15 }
+    }
+  };
+
+  const slotVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { type: "spring", stiffness: 150, damping: 15 }
+    },
+    hover: { scale: 1.05 },
+    tap: { scale: 0.95 }
+  };
+
   return (
     docInfo && (
-      <div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+      >
         {/* Doctor Details */}
-        <div className="flex flex-col sm:flex-row gap-4 ">
-          <div>
-            <img
-              className="bg-primary w-full sm:max-w-72 rounded-lg"
-              src={docInfo.image}
-              alt=""
-            />
-          </div>
-          <div className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0">
-            {/* Doctor info */}
-            <p className="flex items-center gap-2 text-2xl font-medium text-gray-900">
-              {docInfo.name}{" "}
-              <img className="w-5" src={assets.verified_icon} alt="" />
-            </p>
-            <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
-              <p>
-                {docInfo.degree} - {docInfo.speciality}
-              </p>
-              <button className="py-0.5 px-2 border text-sm rounded-full">
-                {docInfo.experience}
-              </button>
-            </div>
-            {/* About */}
-            <div>
-              <p className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
-                About <img className="w-3.5" src={assets.info_icon} alt="" />
-              </p>
-              <p className="text-sm text-gray-500 max-w-[700px] mt-1">
-                {docInfo.about}
-              </p>
-            </div>
-            <p className="text-gray-500 font-medium mt-4">
-              Appointment fee :{" "}
-              <span className="text-gray-600">
-                {currencySymbol}
-                {docInfo.fees}
-              </span>
-            </p>
-          </div>
-        </div>
+        <AnimatePresence mode="wait">
+          {docInfo ? (
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.div variants={itemVariants}>
+                <motion.img
+                  className="bg-primary w-full sm:max-w-72 rounded-lg"
+                  src={docInfo.image}
+                  alt=""
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.div>
+
+              <motion.div 
+                className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0"
+                variants={itemVariants}
+              >
+                {/* Doctor info */}
+                <motion.div variants={containerVariants}>
+                  <motion.p 
+                    className="flex items-center gap-2 text-2xl font-medium text-gray-900"
+                    variants={itemVariants}
+                  >
+                    {docInfo.name}
+                    <motion.img 
+                      className="w-5" 
+                      src={assets.verified_icon} 
+                      alt=""
+                      animate={{ rotate: [0, 15, -15, 0] }}
+                      transition={{ repeat: Infinity, duration: 2.5, delay: 0.5 }}
+                    />
+                  </motion.p>
+
+                  <motion.div 
+                    className="flex items-center gap-2 text-sm mt-1 text-gray-600"
+                    variants={itemVariants}
+                  >
+                    <p>
+                      {docInfo.degree} - {docInfo.speciality}
+                    </p>
+                    <motion.button 
+                      className="py-0.5 px-2 border text-sm rounded-full"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {docInfo.experience}
+                    </motion.button>
+                  </motion.div>
+                </motion.div>
+
+                {/* About */}
+                <motion.div variants={itemVariants}>
+                  <p className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
+                    About <img className="w-3.5" src={assets.info_icon} alt="" />
+                  </p>
+                  <motion.p 
+                    className="text-sm text-gray-500 max-w-[700px] mt-1"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    {docInfo.about}
+                  </motion.p>
+                </motion.div>
+
+                <motion.p 
+                  className="text-gray-500 font-medium mt-4"
+                  variants={itemVariants}
+                >
+                  Appointment fee :{" "}
+                  <span className="text-gray-600">
+                    {currencySymbol}
+                    {docInfo.fees}
+                  </span>
+                </motion.p>
+              </motion.div>
+            </motion.div>
+          ) : (
+            <SkeletonDoctorInfo />
+          )}
+        </AnimatePresence>
 
         {/* Booking Slots */}
-        <div className="sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700-700">
-          <p>Booking slots</p>
-          <div className="flex gap-3 items-center w-full overflow-x-scroll mt-4">
-            {docSlots.length &&
-              docSlots.map((item, index) => (
-                <div
-                  className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${
-                    slotIndex === index
-                      ? "bg-primary text-white"
-                      : "border border-gray-200"
-                  }`}
-                  key={index}
-                  onClick={() => {
-                    setSlotIndex(index);
-                  }}
-                >
-                  <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
-                  <p>{item[0] && item[0].datetime.getDate()}</p>
-                </div>
-              ))}
-          </div>
-          <div className="flex items-center gap-3 w-full overflow-x-scroll mt-4">
-            {docSlots.length &&
-              docSlots[slotIndex].map((item, index) => (
-                <p
-                  className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
-                    item.time === slotTime
-                      ? "bg-primary text-white"
-                      : "text-gray-400 border border-gray-300"
-                  }`}
-                  key={index}
-                  onClick={() => {
-                    setSlotTime(item.time);
-                  }}
-                >
-                  {item.time}
-                </p>
-              ))}
-          </div>
-          <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">Book an appointment</button>
-        </div>
+        <motion.div 
+          className="sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700-700"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <motion.p
+            initial={{ y: 10 }}
+            animate={{ y: 0 }}
+          >
+            Booking slots
+          </motion.p>
+
+          <motion.div 
+            className="flex gap-3 items-center w-full overflow-x-scroll mt-4 p-1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {docSlots.length > 0 ? docSlots.map((item, index) => (
+              <motion.div
+                key={index}
+                className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${
+                  slotIndex === index 
+                    ? "bg-primary text-white" 
+                    : "border border-gray-200"
+                }`}
+                variants={slotVariants}
+                whileHover="hover"
+                whileTap="tap"
+                onClick={() => setSlotIndex(index)}
+              >
+                <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
+                <p>{item[0] && item[0].datetime.getDate()}</p>
+              </motion.div>
+            )) : <SkeletonBookingSlots />}
+          </motion.div>
+
+          <motion.div 
+            className="flex items-center gap-3 w-full overflow-x-scroll mt-4 p-1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {docSlots.length > 0 ? docSlots[slotIndex].map((item, index) => (
+              <motion.p
+                key={index}
+                className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
+                  item.time === slotTime 
+                    ? "bg-primary text-white" 
+                    : "text-gray-400 border border-gray-300"
+                }`}
+                variants={slotVariants}
+                whileHover="hover"
+                whileTap="tap"
+                onClick={() => setSlotTime(item.time)}
+              >
+                {item.time}
+              </motion.p>
+            )) : <SkeletonTimeSlots />}
+          </motion.div>
+
+          <motion.button
+            className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            Book an appointment
+          </motion.button>
+        </motion.div>
+
         <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
-      </div>
+      </motion.div>
     )
   );
 }
-
 export default Appointment;
