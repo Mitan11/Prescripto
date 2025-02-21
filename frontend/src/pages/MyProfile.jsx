@@ -193,7 +193,7 @@ function MyProfile() {
           </motion.button>
         ) : (
           <motion.button
-            className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+            className="border px-8 py-2 rounded-full border-primary hover:bg-primary hover:text-white transition-all duration-300"
             onClick={() => setIsEdit(true)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

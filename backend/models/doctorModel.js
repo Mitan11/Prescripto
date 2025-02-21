@@ -1,5 +1,6 @@
 import mongoose, { Types } from 'mongoose'
 
+// doctor schema
 const doctorSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -16,6 +17,7 @@ const doctorSchema = new mongoose.Schema({
     slots_booked: { type: Object, default: {} },
 }, { minimize: false }) // we can create default {} using minimise : {true}
 
+// doctor model
 const doctorModel = mongoose.models.doctor || mongoose.model("doctor", doctorSchema)
 
 export default doctorModel;

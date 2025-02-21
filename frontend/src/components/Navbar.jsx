@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { assets } from "../assets/assets";
 import { NavLink, useNavigate } from "react-router";
+import { AppContext } from "../context/AppContext";
 
 function Navbar() {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const [token, setToken] = useState(true);
+  const {token,setToken} = useContext(AppContext);
+
+const logout = () => {
+  localStorage.removeItem("token");
+  setToken(false);
+}
 
   // Animation variants
   const containerVariants = {
@@ -106,7 +112,7 @@ function Navbar() {
                   </p>
                   <p
                     className="hover:text-black cursor-pointer hover:bg-gray-200 p-2 rounded-md transition-all duration-300"
-                    onClick={() => setToken(!token)}
+                    onClick={logout}
                   >
                     Logout
                   </p>
@@ -118,7 +124,7 @@ function Navbar() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-primary text-white px-6 py-3 rounded-full font-normal hidden md:block"
+            className="border border-primary hover:bg-primary hover:text-white px-6 py-3 rounded-full font-normal hidden md:block transition-all duration-300"
             onClick={() => navigate("/login")}
           >
             Create account

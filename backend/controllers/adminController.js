@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import { v2 as cloudinary } from 'cloudinary'
 import doctorModel from '../models/doctorModel.js'
 import jwt from 'jsonwebtoken'
+
 // api for adding doctor
 const addDoctor = async (req, res) => {
     try {
@@ -27,6 +28,7 @@ const addDoctor = async (req, res) => {
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
         const imageUrl = imageUpload.secure_url
 
+        // creating a doctor
         const doctorData = {
             name,
             email,
@@ -41,6 +43,7 @@ const addDoctor = async (req, res) => {
             date: Date.now()
         }
 
+        // saving the doctor
         const newDoctor = new doctorModel(doctorData)
         await newDoctor.save()
         res.json({ success: true, message: "Doctor Added" })
@@ -53,6 +56,7 @@ const addDoctor = async (req, res) => {
 // API to get all doctors list for admin dashboard
 const allDoctors = async (req, res) => {
     try {
+        // getting all doctors
         const doctors = await doctorModel.find({}).select("-password")
         res.json({ success: true, doctors })
     } catch (error) {
@@ -60,11 +64,14 @@ const allDoctors = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+
 // api for admin login
 const loginAdmin = async (req, res) => {
     try {
         const { email, password } = req.body
+        // checking if the email and password are correct
         if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
+            // generating a token
             const token = jwt.sign(email+password,process.env.JWT_SECRET)
             res.json({success : true , token})
         }else{

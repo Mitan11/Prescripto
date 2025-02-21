@@ -53,9 +53,8 @@ function Header() {
         <motion.a
           className="flex items-center gap-2 bg-white px-8 py-3 rounded-full text-gray-600 text-sm m-auto md:m-0 hover:scale-105 transition-all duration-300"
           href="#speciality"
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.3 }}
         >
           Book appointment{" "}
           <motion.img

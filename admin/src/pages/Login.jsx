@@ -38,6 +38,7 @@ function Login() {
     if (!validateForm()) {
       return;
     }
+    
     setIsLoading(true);
     try {
       if (state === "Admin") {

@@ -35,8 +35,8 @@ function MyAppointments() {
     <div>
       <motion.p
         className="pb-4 font-medium text-zinc-700 border-b"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}
       >
         My appointments
@@ -53,7 +53,8 @@ function MyAppointments() {
               className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b"
               key={item._id}
               variants={itemVariants}
-              whileHover={{ x: 5 }}
+              transition={{ type: "spring" }}
+              whileHover={{ scale: 1.02 }}
             >
               {/* Image */}
               <motion.div
@@ -95,7 +96,9 @@ function MyAppointments() {
                   25 , July ,2025 | 8:30 PM
                 </motion.p>
               </motion.div>
+              <div>
 
+              </div>
               {/* Buttons */}
               <motion.div
                 className="flex flex-col gap-2 justify-end"

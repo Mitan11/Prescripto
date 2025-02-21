@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 
+// user schema
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -11,6 +12,7 @@ const userSchema = new mongoose.Schema({
     phone: { type: String, default: "0000000000" }
 })
 
+// user model
 const userModel = mongoose.models.user || mongoose.model("user", userSchema)
 
 export default userModel;

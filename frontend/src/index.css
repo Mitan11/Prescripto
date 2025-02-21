@@ -21,3 +21,52 @@
         @apply text-white bg-primary
     }
 }
+
+.loading {
+    --dasharray: 814;
+    position: relative;
+    width: 100%;
+    max-width: 550px;
+    height: 206px;
+    background: transparent none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loading svg {
+    position: absolute;
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+  }
+  .loading svg path {
+    stroke-dasharray: var(--dasharray);
+    -webkit-animation: heartRate 5s infinite linear forwards;
+    animation: heartRate 5s infinite linear forwards;
+  }
+
+  @-webkit-keyframes heartRate {
+    from {
+      stroke-dashoffset: var(--dasharray);
+    }
+    to {
+      stroke-dashoffset: calc(var(--dasharray) * -1px);
+    }
+  }
+  @keyframes heartRate {
+    from {
+      stroke-dashoffset: var(--dasharray);
+    }
+    to {
+      stroke-dashoffset: calc(var(--dasharray) * -1px);
+    }
+  }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 97vh;
+    width: 100%;
+  }
