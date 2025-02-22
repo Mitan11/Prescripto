@@ -7,7 +7,7 @@ import { AppContext } from "../context/AppContext";
 function Navbar() {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const {token,setToken} = useContext(AppContext);
+  const {token,setToken,userData} = useContext(AppContext);
 
 const logout = () => {
   localStorage.removeItem("token");
@@ -43,7 +43,7 @@ const logout = () => {
       <motion.img
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="w-44 cursor-pointer"
+        className="sm:w-44 w-36 cursor-pointer"
         src={assets.logo}
         alt=""
         onClick={() => navigate("/")}
@@ -77,12 +77,12 @@ const logout = () => {
       </ul>
 
       <div className="flex items-center gap-4">
-        {token ? (
+        {token && userData ? (
           <motion.div className="relative group">
             <div className="flex items-center gap-2">
               <img
-                className="w-8 rounded-full"
-                src={assets.profile_pic}
+                className="w-8 h-8 object-cover object-center rounded-full"
+                src={userData.image}
                 alt=""
               />
               <img className="w-2.5" src={assets.dropdown_icon} alt="" />
@@ -124,10 +124,10 @@ const logout = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="border border-primary hover:bg-primary hover:text-white px-6 py-3 rounded-full font-normal hidden md:block transition-all duration-300"
+            className="border border-primary hover:bg-primary hover:text-white px-6 py-3 rounded-lg font-normal hidden md:block transition-all duration-300"
             onClick={() => navigate("/login")}
           >
-            Create account
+            Login
           </motion.button>
         )}
 

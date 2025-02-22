@@ -2,6 +2,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
 
 // api to register a user
 const registerUser = async (req, res) => {
@@ -81,4 +82,58 @@ const loginUser = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser };
+// api to get the user details
+const getProfile = async (req, res) => {
+    try {
+        // getting the user id from the body
+        const { userId } = req.body;
+
+        // finding the user
+        const userData = await userModel.findById(userId).select("-password");
+
+        // sending the response
+        res.json({ success: true, userData });
+        
+    } catch (error) {
+        console.log(error.message);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+// api to update the user details
+const updateProfile = async (req, res) => {
+    try {
+        // getting the user id from the body
+        const { userId , name , address , gender , dob , phone } = req.body;
+
+        // getting the image file from the body
+        const imageFile = req.file;
+
+        // checking if there are any changes to update
+        if(!name || !gender || !dob || !phone || !address){
+            return res.json({ success: false, message: "All fields are required" });
+        }
+
+        // updating the user details
+        await userModel.findByIdAndUpdate(userId, { name , address:JSON.parse(address) , gender , dob , phone });
+
+        // checking if the image file is provided
+        if(imageFile){
+            // uploading image to cloudinary
+            const image = await cloudinary.uploader.upload(imageFile.path, {resource_type: "image"});
+            // getting the image url
+            const imageUrl = image.secure_url;
+            // updating the user image
+            await userModel.findByIdAndUpdate(userId, { image: imageUrl });
+        }
+
+        // sending the response
+        res.json({ success: true, message: "Profile updated successfully" });
+        
+    } catch (error) {
+        console.log(error.message);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+export { registerUser, loginUser, getProfile, updateProfile };

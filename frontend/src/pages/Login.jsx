@@ -10,7 +10,7 @@ function Login() {
   const { backendUrl, token, setToken } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const [state, setState] = useState("Sign Up");
+  const [state, setState] = useState("Login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -164,9 +164,10 @@ function Login() {
                 Full Name
               </label>
               <motion.input
-                className={`border border-zinc-300 rounded w-full p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
-                  errors.name ? "border-red-500" : "border-gray-300"
+                className={`border rounded w-full p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
+                  errors.email ? "border-red-500" : "border-zinc-300"
                 } ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
+                
                 type="text"
                 id="name"
                 value={name}
@@ -189,9 +190,10 @@ function Login() {
             Email
           </label>
           <motion.input
-            className={`border border-zinc-300 rounded w-full p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
-              errors.email ? "border-red-500" : "border-gray-300"
+            className={`border rounded w-full p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
+              errors.email ? "border-red-500" : "border-zinc-300"
             } ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
+            
             type="text"
             id="email"
             value={email}
@@ -213,9 +215,10 @@ function Login() {
           </label>
           <div className="relative">
             <motion.input
-              className={`border border-zinc-300 rounded w-full p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              } ${isLoading ? "cursor-not-allowed opacity-50" : ""} `}
+              className={`border rounded w-full p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
+                errors.email ? "border-red-500" : "border-zinc-300"
+              } ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
+              
               type={showPassword ? "text" : "password"}
               id="password"
               value={password}

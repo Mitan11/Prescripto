@@ -8,7 +8,7 @@ import { changeAvailability } from "../controllers/doctorController.js";
 const adminRouter = express.Router();
 
 // adding a doctor with image upload route
-adminRouter.post('/add-doctor', authAdmin, upload.single('image'), addDoctor)
+adminRouter.post('/add-doctor',  authAdmin ,upload.single('image'), addDoctor)
 
 // login admin route
 adminRouter.post('/login', loginAdmin)
