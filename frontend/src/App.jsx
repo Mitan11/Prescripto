@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router";
+import { Route, Routes, useLocation, Navigate } from "react-router";
 import Home from "./pages/Home";
 import Doctors from "./pages/Doctors";
 import Login from "./pages/Login";
@@ -11,28 +11,27 @@ import Appointment from "./pages/Appointment";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import PreLoader from "./components/PreLoader";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true); // Show PreLoader on route change
-    const timer = setTimeout(() => {
-      setLoading(false); // Hide PreLoader after 1 seconds
+    setLoading(true);
+    const timer = setTimeout(() => { 
+      setLoading(false);
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [location.pathname]); // Run effect when route changes
+  }, [location.pathname]);
 
   return (
     <div className="mx-4 sm:mx-[10%]">
-      {/* Show PreLoader before rendering content */}
       {loading ? (
         <PreLoader />
       ) : (
         <>
-          {/* Hide Navbar on login route */}
           {location.pathname !== "/login" && <Navbar />}
           <Routes>
             <Route path="/" element={<Home />} />
@@ -41,11 +40,36 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/my-profile" element={<MyProfile />} />
-            <Route path="/my-appointments" element={<MyAppointments />} />
-            <Route path="/appointment/:docId" element={<Appointment />} />
+
+            {/* Protected Routes */}
+            <Route
+              path="/my-profile"
+              element={
+                <PrivateRoute>
+                  <MyProfile />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/my-appointments"
+              element={
+                <PrivateRoute>
+                  <MyAppointments />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/appointment/:docId"
+              element={
+                <PrivateRoute>
+                  <Appointment />
+                </PrivateRoute>
+              }
+            />
+
+            {/* Redirect unknown routes */}
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-          {/* Hide Footer on login route */}
           {location.pathname !== "/login" && <Footer />}
         </>
       )}

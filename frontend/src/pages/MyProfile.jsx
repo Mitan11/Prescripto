@@ -103,7 +103,7 @@ function MyProfile() {
   
       {isEdit ? (
         <motion.input
-          className={`bg-gray-50 text-xl sm:text-2xl font-medium max-w-full sm:max-w-60 mt-4 ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+          className={`bg-gray-50 text-xl sm:text-2xl font-medium max-w-full sm:max-w-60 mt-4 ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-auto"}`}
           type="text"
           value={userData.name}
           onChange={(e) => setUserData((prev) => ({ ...prev, name: e.target.value }))}
@@ -136,7 +136,7 @@ function MyProfile() {
           </motion.p>
           {isEdit ? (
             <motion.input
-              className={`bg-gray-100 w-full sm:max-w-52 ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+              className={`bg-gray-100 w-full sm:max-w-52 ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-auto"}`}
               type="text"
               value={userData.phone}
               onChange={(e) => setUserData((prev) => ({ ...prev, phone: e.target.value }))}
@@ -154,29 +154,29 @@ function MyProfile() {
           {isEdit ? (
             <motion.div className="flex flex-col gap-1" variants={inputVariants}>
               <input
-                className={`bg-gray-50 w-full ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+                className={`bg-gray-50 w-full ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-auto"}`}
                 type="text"
-                value={userData.address.line1}
+                value={userData.address.line1 || ""}
                 onChange={(e) => setUserData((prev) => ({
                   ...prev,
-                  address: { ...prev.address, line1: e.target.value },
+                  address: { ...prev.address, line1: e.target.value || "" },
                 }))}
               />
               <input
-                className={`bg-gray-50 w-full ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+                className={`bg-gray-50 w-full ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-auto"}`}
                 type="text"
-                value={userData.address.line2}
+                value={userData.address.line2 || ""}
                 onChange={(e) => setUserData((prev) => ({
                   ...prev,
-                  address: { ...prev.address, line2: e.target.value },
+                  address: { ...prev.address, line2: e.target.value || "" },
                 }))}
               />
             </motion.div>
           ) : (
             <motion.p variants={itemVariants}>
-              {userData.address.line1}
+              {userData?.address?.line1 ?? "N/A"}
               <br />
-              {userData.address.line2}
+              {userData?.address?.line2 ?? "N/A"}
             </motion.p>
           )}
         </motion.div>
@@ -213,7 +213,7 @@ function MyProfile() {
           </motion.p>
           {isEdit ? (
             <motion.input
-              className={`w-full sm:max-w-28 bg-gray-100 ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+              className={`w-full sm:max-w-[132px] bg-gray-100 ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-1"}`}
               type="date"
               onChange={(e) => setUserData((prev) => ({ ...prev, dob: e.target.value }))}
               value={userData.dob}

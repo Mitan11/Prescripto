@@ -12,6 +12,7 @@ function Navbar() {
 const logout = () => {
   localStorage.removeItem("token");
   setToken(false);
+  navigate("/login");
 }
 
   // Animation variants
