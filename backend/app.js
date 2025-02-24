@@ -16,9 +16,9 @@ app.use(express.json())
 app.use(cors())
 
 // api endpoints
-app.use('/api/admin', adminRouter)// localhost:4000/api/admin/add-doctor
-app.use('/api/doctor', doctorRouter)// localhost:4000/api/doctor/list
-app.use('/api/user', userRouter)// localhost:4000/api/user/register
+app.use('/api/admin', adminRouter)// localhost:4000/api/admin/
+app.use('/api/doctor', doctorRouter)// localhost:4000/api/doctor/
+app.use('/api/user', userRouter)// localhost:4000/api/user/
 
 // testing api
 app.get('/', (req, res) => {

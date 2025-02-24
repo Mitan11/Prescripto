@@ -17,6 +17,7 @@ function App() {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
 
+  // pre
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => { 
@@ -37,6 +38,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/doctors" element={<Doctors />} />
             <Route path="/doctors/:speciality" element={<Doctors />} />
+            
             <Route path="/login" element={<Login />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
