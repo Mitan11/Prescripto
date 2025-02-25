@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import { v2 as cloudinary } from 'cloudinary'
 import doctorModel from '../models/doctorModel.js'
 import jwt from 'jsonwebtoken'
+import appointmentModel from '../models/appointmentModel.js'
 
 // api for adding doctor
 const addDoctor = async (req, res) => {
@@ -83,4 +84,52 @@ const loginAdmin = async (req, res) => {
     }
 }
 
-export { addDoctor, loginAdmin, allDoctors }
+// api to get all appointments for admin dashboard
+const  appointmentAdmin = async (req, res) => {
+    try {
+        // getting all appointments
+        const appointments = await appointmentModel.find({});
+
+        // sending the response
+        res.json({ success: true, appointments })
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// api to cancel appointment
+const AppointmentCancel = async (req, res) => {
+    try {
+        // getting the appointment id from the body
+        const { appointmentId } = req.body;
+
+        // finding the appointment data
+        const appointmentData = await appointmentModel.findById(appointmentId);
+
+        // deleting the appointment
+        await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true });
+
+        // getting the doctor id and the slot date and time from the appointment data
+        const {docId , slotDate , slotTime} = appointmentData;
+
+        // getting the doctor data
+        const doctorData = await doctorModel.findById(docId);
+
+        // getting the slots booked
+        let slotsBooked = doctorData.slots_booked;
+
+        // removing the slot from the slots booked
+        slotsBooked[slotDate] = slotsBooked[slotDate].filter(e => e !== slotTime);
+
+        // updating the doctor data
+        await doctorModel.findByIdAndUpdate(docId, { slots_booked: slotsBooked });
+
+        // sending the response
+        res.json({ success: true, message: "Appointment cancelled successfully" });
+    } catch (error) {
+        console.log(error.message);
+        res.json({ success: false, message: error.message });
+    }
+}
+export { addDoctor, loginAdmin, allDoctors, appointmentAdmin, AppointmentCancel }

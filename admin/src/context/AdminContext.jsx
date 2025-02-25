@@ -10,6 +10,7 @@ const AdminContextProvider = (props)=>{
     const [aToken , setAToken] = useState(localStorage.getItem('aToken')?localStorage.getItem('aToken'):'')
     const [doctors , setDoctors] = useState([])
     const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const [appointments , setAppointments] = useState([])
 
     const getAllDoctors = async () => {
         try {
@@ -41,8 +42,42 @@ const AdminContextProvider = (props)=>{
         }
     }
 
+    const getAllAppointments = async ()=>{
+        try {
+            const {data} = await axios.get(backendUrl + "/api/admin/all-appointments", {headers:{aToken}})
+            if (data.success) {
+                setAppointments(data.appointments)
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message)
+
+        }
+    }
+
+    const cancelAppointment = async (appointmentId) => {
+        try {
+          const {data} = await axios.post(`${backendUrl}/api/admin/cancel-appointment`, {appointmentId}, {
+            headers: {
+              aToken
+            }
+          })
+          if(data.success){
+            toast.success(data.message)
+            getAllAppointments()
+          }else{
+            toast.error(data.message)
+          }
+        } catch (error) {
+          console.log(error.message)
+          toast.error(error.message)
+        }
+      }
+
     const value = {
-        aToken , setAToken , backendUrl , doctors , getAllDoctors , changeAvailability
+        aToken , setAToken , backendUrl , doctors , getAllDoctors , changeAvailability , appointments , getAllAppointments , setAppointments , cancelAppointment
     }
 
     return (

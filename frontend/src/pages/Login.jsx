@@ -115,6 +115,12 @@ function Login() {
     visible: { width: "100%", transition: { duration: 0.8 } },
   };
 
+  const stateChangeVariants = {
+    initial: { y: 20, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    exit: { y: -20, opacity: 0 },
+  };
+
   return (
     <motion.form
       initial={{ opacity: 0 }}
@@ -135,12 +141,21 @@ function Login() {
           initial="hidden"
           animate="visible"
         >
-          <motion.h2
-            className="text-2xl font-semibold text-gray-800"
-            variants={itemVariants}
-          >
-            {state === "Sign Up" ? "Create Account" : "Welcome Back"}
-          </motion.h2>
+          <motion.div variants={itemVariants}>
+            <AnimatePresence mode="wait">
+              <motion.h2
+                key={state}
+                className="text-2xl font-semibold text-gray-800"
+                variants={stateChangeVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                {state === "Sign Up" ? "Create Account" : "Welcome Back"}
+              </motion.h2>
+            </AnimatePresence>
+          </motion.div>
 
           <motion.div
             className="h-1 bg-primary mt-1"
@@ -167,7 +182,6 @@ function Login() {
                 className={`border rounded w-full p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
                   errors.email ? "border-red-500" : "border-zinc-300"
                 } ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
-                
                 type="text"
                 id="name"
                 value={name}
@@ -193,7 +207,6 @@ function Login() {
             className={`border rounded w-full p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
               errors.email ? "border-red-500" : "border-zinc-300"
             } ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
-            
             type="text"
             id="email"
             value={email}
@@ -218,7 +231,6 @@ function Login() {
               className={`border rounded w-full p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition duration-200 ${
                 errors.email ? "border-red-500" : "border-zinc-300"
               } ${isLoading ? "cursor-not-allowed opacity-50" : ""}`}
-              
               type={showPassword ? "text" : "password"}
               id="password"
               value={password}

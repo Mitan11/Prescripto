@@ -3,7 +3,7 @@ import { AdminContext } from "../context/AdminContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FaArrowRight, FaEye, FaEyeSlash } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 function Login() {
   const [state, setState] = useState("Admin");
@@ -38,7 +38,7 @@ function Login() {
     if (!validateForm()) {
       return;
     }
-    
+
     setIsLoading(true);
     try {
       if (state === "Admin") {
@@ -63,36 +63,79 @@ function Login() {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1,
+        when: "beforeChildren",
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const underlineVariants = {
+    hidden: { width: 0 },
+    visible: { width: "100%", transition: { duration: 0.8 } },
+  };
+
+  const stateChangeVariants = {
+    initial: { y: 20, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    exit: { y: -20, opacity: 0 },
+  };
+
   return (
     <motion.form
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-100 to-gray-200 p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-[100vh] flex items-center justify-center "
       onSubmit={onSubmitHandler}
     >
       <motion.div
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
-        className="w-full max-w-sm md:max-w-md lg:max-w-lg p-6 md:p-8 bg-white border border-gray-300 rounded-xl shadow-lg"
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="flex flex-col gap-4 m-auto items-start p-8 min-w-[300px] sm:min-w-96 border border-gray-300 rounded-xl text-zinc-600 text-sm shadow-lg bg-white"
       >
         <motion.div
-          className="mb-8 text-center relative"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          className="w-full mb-4"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-center">
-            {state} <span className="text-primary">Login</span>
-          </h2>
+          <motion.div variants={itemVariants}>
+            <AnimatePresence mode="wait">
+              <motion.h2
+                key={state}
+                className="text-2xl font-semibold text-gray-800"
+                variants={stateChangeVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                {state} <span className="text-primary">Login</span>
+              </motion.h2>
+            </AnimatePresence>
+          </motion.div>
           <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: "4rem" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="mt-2 h-1 bg-gradient-to-r from-pink-600 to-blue-600 mx-auto rounded-full"
+            className="h-1 bg-primary mt-1"
+            variants={underlineVariants}
+            initial="hidden"
+            animate="visible"
           />
         </motion.div>
 
-        <motion.div whileFocus={{ scale: 1.02 }} className="mb-4">
+        <motion.div whileFocus={{ scale: 1.02 }} className="w-full">
           <label htmlFor="email" className="block text-gray-700 mb-1">
             Email
           </label>
@@ -107,17 +150,17 @@ function Login() {
             placeholder="Enter your email"
             className={`w-full p-2 px-4 border focus:border-transparent ${
               errors.email ? "border-red-500" : "border-gray-300"
-            } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition duration-200 ${
+            } rounded focus:outline-none focus:ring-2 focus:ring-primary transition duration-200 ${
               isLoading ? "cursor-not-allowed opacity-50" : ""
             }`}
-            whileFocus={{ scale: 1.01 }}
+            whileFocus={{ scale: 1.02 }}
           />
           {errors.email && (
             <p className="mt-1 text-sm text-red-500">{errors.email}</p>
           )}
         </motion.div>
 
-        <motion.div whileFocus={{ scale: 1.02 }} className="mb-6 relative">
+        <motion.div whileFocus={{ scale: 1.02 }} className="w-full">
           <label htmlFor="password" className="block text-gray-700 mb-1">
             Password
           </label>
@@ -133,7 +176,7 @@ function Login() {
               placeholder="Enter your password"
               className={`w-full p-2 px-4 border focus:border-transparent ${
                 errors.password ? "border-red-500" : "border-gray-300"
-              } rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition duration-200 ${
+              } rounded focus:outline-none focus:ring-2 focus:ring-primary transition duration-200 ${
                 isLoading ? "cursor-not-allowed opacity-50" : ""
               }`}
               whileFocus={{ scale: 1.01 }}
@@ -154,9 +197,11 @@ function Login() {
 
         <motion.button
           type="submit"
-          className={`w-full py-3 mb-4 font-medium flex items-center justify-center space-x-2 text-white bg-primary focus:outline-none focus:bg-primary/90 rounded-xl hover:bg-primary/90 transition-all duration-200 ${
+          className={`w-full py-3 font-medium flex items-center justify-center space-x-2 text-white bg-primary focus:outline-none focus:bg-primary/90 rounded-md hover:bg-primary/90 transition-all duration-200 ${
             isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"
           }`}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           {isLoading ? (
             <>
@@ -174,17 +219,22 @@ function Login() {
         <p className="text-center text-sm md:text-base text-gray-600">
           {state === "Admin" ? (
             <>
-              Doctor Login?{" "}
+              Switch to Doctor? 
               <span
                 className="text-primary underline cursor-pointer"
-                onClick={() => setState("Doctor")}
+                onClick={() => {
+                  setState("Doctor");
+                  setEmail("");
+                  setPassword("");
+                  setErrors({ email: "", password: "" });
+                }}
               >
                 Click here
               </span>
             </>
           ) : (
             <>
-              Admin Login?{" "}
+              Switch to Admin? 
               <span
                 className="text-primary underline cursor-pointer"
                 onClick={() => {

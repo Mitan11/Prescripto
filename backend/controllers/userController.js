@@ -279,21 +279,8 @@ const makePayment = async (req, res) => {
         if(!appointmentData || appointmentData.cancelled){
             return res.json({ success: false, message: "Appointment not found or cancelled" });
         }
-
-        /* From here optional */
-
-        // creating options for the razorpay order
-        // const options = {
-        //     amount: appointmentData.amount * 100,
-        //     currency: process.env.CURRENCY,
-        //     receipt: appointmentId,
-        // }
         
-        // creation of the order
-        // const order = await razorpayInstance.orders.create(options);
-
-        /* Till here optional */
-
+        // updating the payment status
         await appointmentModel.findByIdAndUpdate(appointmentId, { payment : true });
 
         // sending the response
