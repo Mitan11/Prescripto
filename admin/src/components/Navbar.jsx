@@ -29,11 +29,11 @@ function Navbar() {
       {/* Left Section - Logo & Role */}
       <div className="flex items-center gap-2 text-xs">
         <img 
-          className="w-36 sm:w-40 cursor-pointer" 
+          className="w-25 sm:w-40 cursor-pointer" 
           src={assets.admin_logo} 
           alt="Admin Logo"
         />
-        <p className="border px-2.5 py-0.5 rounded-full border-gray-500 text-gray-600">
+        <p className="border px-2.5 py-0.5 text-xs rounded-full border-gray-500 text-gray-600">
           {aToken ? "Admin" : "Doctor"}
         </p>
       </div>
@@ -43,7 +43,7 @@ function Navbar() {
         onClick={logout}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="bg-primary text-white text-sm px-10 py-2 focus:outline-none focus:bg-primary/90 rounded-full cursor-pointer hover:bg-primary/90"
+        className="bg-primary text-white text-sm px-5 py-2 focus:outline-none focus:bg-primary/90 rounded-full cursor-pointer hover:bg-primary/90"
       >
         Logout
       </motion.button>

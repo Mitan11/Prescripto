@@ -193,7 +193,7 @@ function MyAppointments() {
                   transition={{ type: "spring", stiffness: 100 }}
                 >
                   <img
-                    className="w-32 bg-indigo-50"
+                    className="w-32 bg-indigo-50 sm:h-32 object-cover object-top"
                     src={item.docData.image}
                     alt=""
                   />

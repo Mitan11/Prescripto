@@ -123,7 +123,7 @@ function Doctors() {
         >
           {filterdoc.length > 0 ? (
             <AnimatePresence>
-              {filterdoc.slice(0, 10).map((item, index) => (
+              {filterdoc.map((item, index) => (
                 <motion.div
                   className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer bg-white"
                   key={item._id}
@@ -139,7 +139,7 @@ function Doctors() {
                   }}
                 >
                   <motion.img 
-                    className="bg-blue-50 w-full" 
+                    className="bg-blue-50 w-full h-[230px] object-cover" 
                     src={item.image} 
                     alt=""
                     initial={{ opacity: 0 }}

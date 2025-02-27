@@ -52,7 +52,7 @@ function DoctorsList() {
               viewport={{ once: false, amount: 0.3 }}
             >
               <img
-                className="bg-indigo-50 group-hover:bg-primary transition-all duration-500"
+                className="bg-indigo-50 group-hover:bg-primary w-56 h-[230px] object-top object-cover transition-all duration-500"
                 src={item.image}
                 alt="doctor"
               />

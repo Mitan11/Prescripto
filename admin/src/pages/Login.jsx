@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { FaArrowRight, FaEye, FaEyeSlash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
+import { DoctorContext } from "../context/DoctorContext";
 
 function Login() {
   const [state, setState] = useState("Admin");
@@ -13,6 +14,7 @@ function Login() {
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const { setAToken, backendUrl } = useContext(AdminContext);
+  const { setDToken } = useContext(DoctorContext);
 
   const validateForm = () => {
     let isValid = true;
@@ -54,7 +56,17 @@ function Login() {
           toast.error(data.message);
         }
       } else {
-        // Add doctor login logic here
+        const { data } = await axios.post(backendUrl + "/api/doctor/login", {
+          email,
+          password,
+        });
+        if (data.success) {
+          localStorage.setItem("dToken", data.token);
+          setDToken(data.token);  
+          toast.success("Login successful");
+        } else {
+          toast.error(data.message);
+        }
       }
     } catch (error) {
       toast.error("An error occurred during login");

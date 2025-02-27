@@ -30,6 +30,4 @@ userRouter.post("/cancelAppointment", authUser, cancelAppointment);
 // make payment route
 userRouter.post("/makePayment", authUser, makePayment);
 
-
-
 export default userRouter;

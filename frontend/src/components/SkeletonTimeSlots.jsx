@@ -5,7 +5,7 @@ const SkeletonTimeSlots = () => {
   const dummyTimeSlots = new Array(6).fill(null); // Creating 5 placeholders
 
   return (
-    <div className="flex items-center gap-3 w-full overflow-x-scroll mt-4">
+    <div className="flex items-center sm:ml-72 sm:pl-4 gap-3 w-full overflow-x-scroll mt-4">
       {dummyTimeSlots.map((_, index) => (
         <motion.p
           key={index}

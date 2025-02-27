@@ -18,8 +18,10 @@ function MyAppointmentskeleton() {
             <div className="h-4 bg-gray-200 rounded w-2/5"></div>
           </div>
     
+          <div></div>
+
           {/* Buttons Placeholder */}
-          <div className="flex flex-col gap-2 justify-end">
+          <div className="flex flex-col gap-2 justify-end items-end w-full">
             <div className="h-10 bg-gray-200 rounded w-48"></div>
             <div className="h-10 bg-gray-200 rounded w-48"></div>
           </div>

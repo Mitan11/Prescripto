@@ -2,12 +2,15 @@ import React, { useContext } from "react";
 import { NavLink } from "react-router";
 import { motion } from "framer-motion";
 import { AdminContext } from "../context/AdminContext";
+import { DoctorContext } from "../context/DoctorContext";
 import { assets } from "../assets/assets";
+import NavItem from "../components/NavItem";
 
 function Sidebar() {
   const { aToken } = useContext(AdminContext);
+  const { dToken } = useContext(DoctorContext);
 
-  // Sidebar Animation Variants 
+  // Sidebar Animation Variants
   const sidebarVariants = {
     hidden: { x: -250, opacity: 0 }, // Initially hidden (off-screen)
     visible: {
@@ -44,27 +47,28 @@ function Sidebar() {
           />
         </ul>
       )}
+
+      {dToken && (
+        <ul className="text-[#515151] mt-5">
+          <NavItem
+            to="/doctor-dashboard"
+            icon={assets.home_icon}
+            text="Dashboard"
+          />
+          <NavItem
+            to="/doctor-appointment"
+            icon={assets.appointment_icon}
+            text="Appointments"
+          />
+          <NavItem
+            to="/doctor-profile"
+            icon={assets.add_icon}
+            text="Profile"
+          />
+        </ul>
+      )}
     </motion.div>
   );
 }
-
-const NavItem = ({ to, icon, text }) => (
-  <motion.li
-    whileHover={{ scale: 1.05 }} 
-    whileTap={{ scale: 0.95 }} 
-  >
-    <NavLink
-      className={({ isActive }) =>
-        `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-          isActive ? "bg-[#F2F3FF] border-r-4 border-primary" : ""
-        }`
-      }
-      to={to}
-    >
-      <img src={icon} alt={`${text} Icon`} />
-      <p>{text}</p>
-    </NavLink>
-  </motion.li>
-);
 
 export default Sidebar;

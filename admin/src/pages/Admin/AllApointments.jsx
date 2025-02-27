@@ -8,29 +8,10 @@ import TableRowSkeleton from "../../components/TableRowSkeleton";
 function AllAppointments() {
   const { aToken, appointments, getAllAppointments, cancelAppointment } =
     useContext(AdminContext);
-  const { calculateAge, currency } = useContext(AppContext);
+  const { calculateAge, currency, slotDateFormat } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  const months = [
-    "",
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  const slotDateFormat = (slotDate) => {
-    const dateArray = slotDate.split("_");
-    return `${dateArray[0]} ${months[Number(dateArray[1])]} ${dateArray[2]}`;
-  };
+  
 
   useEffect(() => {
     if (aToken) {
@@ -107,7 +88,7 @@ function AllAppointments() {
                   onClick={() => cancelAppointment(item._id)}
                   className="rounded-full text-white px-4 w-8 h-8 bg-red-100 hover:bg-red-200 transition-all duration-300 cursor-pointer flex items-center justify-center"
                 >
-                  <FaXmark className="text-red-400" />
+                  <span><FaXmark className="text-red-400" /></span>
                 </button>
               )}
             </motion.div>
