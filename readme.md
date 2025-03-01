@@ -227,4 +227,3 @@ fetch("/api/admin/add-doctor", {
 [![Email](https://img.shields.io/badge/Contact-Email%20Us-blue?logo=gmail)](mailto:mitantank00@gmail.com)  
 [![Instagram](https://img.shields.io/badge/Follow%20on-Instagram-1DA1F2?logo=instagram)](https://www.instagram.com/__.mituu._)
 
-```
