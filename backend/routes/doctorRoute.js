@@ -1,5 +1,5 @@
 import express from "express";
-import { doctorList, loginDoctor, appointmentsDoctor, appointmentCompleted, appointmentCancelled } from "../controllers/doctorController.js";
+import { doctorList, loginDoctor, appointmentsDoctor, appointmentCompleted, appointmentCancelled, doctorDashboard, doctorProfile, updateDoctorProfile } from "../controllers/doctorController.js";
 import authDoctor from "../middlewares/authDoctor.js";
 
 // doctor router
@@ -19,5 +19,14 @@ doctorRouter.post("/appointment-completed", authDoctor, appointmentCompleted);
 
 // api to mark the appointment is cancelled
 doctorRouter.post("/appointment-cancelled", authDoctor, appointmentCancelled);
+
+// api to get the doctor dashboard data
+doctorRouter.get("/dashboard", authDoctor, doctorDashboard);
+
+// api to get the doctor profile
+doctorRouter.get("/profile", authDoctor, doctorProfile);
+
+// api to update the doctor profile
+doctorRouter.post("/update-profile", authDoctor, updateDoctorProfile);
 
 export default doctorRouter;

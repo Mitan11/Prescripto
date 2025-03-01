@@ -276,6 +276,11 @@ function MyAppointments() {
                       Appointment cancelled
                     </motion.button>
                   )}
+                  {item.isCompleted && (
+                    <motion.button className="sm:min-w-48 py-2 border cursor-not-allowed border-green-500 rounded text-green-500 ">
+                      Appointment completed
+                    </motion.button>
+                  )}
                 </motion.div>
               </motion.div>
             ))

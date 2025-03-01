@@ -156,8 +156,6 @@ const adminDashboard = async (req, res) => {
             latestAppointments : appointments.reverse().slice(0,5)
         }
 
-        console.log(req.headers);
-
         // sending the response
         res.json({ success: true, dashData })
     } catch (error) {

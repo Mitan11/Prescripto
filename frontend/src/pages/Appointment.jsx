@@ -334,12 +334,12 @@ function Appointment() {
         <motion.button
           className={`flex items-center justify-center gap-2 bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6 ${
             isLoading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          } ${docInfo.available ? "" : "bg-primary/70 cursor-not-allowed"}`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300 }}
           onClick={bookAppointment}
-          disabled={isLoading}
+          disabled={isLoading || !docInfo.available}
         >
           {isLoading ? (
             <>
