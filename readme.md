@@ -1,4 +1,3 @@
-```markdown
 # Doctor Appointment Booking System 🏥
 
 ![MERN Stack](https://img.shields.io/badge/MERN-Full%20Stack-blue)
