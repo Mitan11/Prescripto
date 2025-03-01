@@ -1,12 +1,12 @@
 # Doctor Appointment Booking System 🏥
 
 ![MERN Stack](https://img.shields.io/badge/MERN-Full%20Stack-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
 ![Version](https://img.shields.io/badge/Version-1.0.0-brightgreen)
 
 A comprehensive medical appointment management system built with MERN stack (MongoDB, Express.js, React.js, Node.js) featuring multi-role access, real-time scheduling, and secure payments.
 
 ## Table of Contents 📑
+
 - [Features](#features-)
 - [Architecture](#architecture-)
 - [Installation](#installation-)
@@ -19,19 +19,20 @@ A comprehensive medical appointment management system built with MERN stack (Mon
 ## Features ✨
 
 ### Multi-Role Access Control
-| Role      | Capabilities |
-|-----------|--------------|
+
+| Role        | Capabilities                                                                       |
+| ----------- | ---------------------------------------------------------------------------------- |
 | **Patient** | - Book/cancel appointments<br>- Secure payment integration<br>- Profile management |
-| **Doctor**  | - Appointment calendar<br>- Earnings dashboard<br>- Availability management |
-| **Admin**   | - User/doctor management<br>- System analytics<br>- Content moderation |
+| **Doctor**  | - Manage Appointment<br>- Earnings dashboard<br>- Availability management          |
+| **Admin**   | - User/doctor management<br>- System analytics<br>- Content moderation             |
 
 ### Core Functionalities
+
 - 🔐 JWT-based authentication system
 - 🗓 Real-time appointment scheduling
 - 💳 Integrated payment gateway (Stripe/RazorPay)
 - 📱 Responsive mobile-first design
 - 📊 Interactive dashboards with analytics
-- 📈 Doctor performance metrics
 
 ## Architecture 🏗️
 
@@ -48,6 +49,7 @@ graph TD
 ## Installation ⚙️
 
 ### Prerequisites
+
 - Node.js v16+
 - MongoDB Atlas cluster
 - Cloudinary account
@@ -55,12 +57,14 @@ graph TD
 ### Setup Guide
 
 1. **Clone Repository**
+
 ```bash
-git clone https://github.com/yourusername/doctor-appointment-system.git
-cd doctor-appointment-system
+git clone https://github.com/Mitan11/Prescripto.git
+cd Prescripto
 ```
 
 2. **Backend Setup**
+
 ```bash
 cd backend
 npm install
@@ -70,8 +74,18 @@ npm start
 ```
 
 3. **Frontend Setup**
+
 ```bash
 cd ../frontend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+4. **Admin Setup**
+
+```bash
+cd ../admin
 npm install
 cp .env.example .env
 npm run dev
@@ -80,43 +94,114 @@ npm run dev
 ## Configuration ⚙️
 
 ### Environment Variables
+
 ```ini
 # Backend .env
-MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/dbname
-JWT_SECRET=your_jwt_secret_key
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
+MONGODB_URI = 'mongodb+srv://<user>:<password>@cluster.mongodb.net/dbname'
+CLOUDINARY_NAME = 'your_cloud_name'
+CLOUDINARY_API_KEY = 'your_api_key'
+CLOUDINARY_SECRET_KEY = 'your_api_secret'
+ADMIN_EMAIL = 'admin@gmail.com'
+ADMIN_PASSWORD = 'admin123'
+JWT_SECRET = "your_jwt_secret_key"
+CURRENCY = "INR"
 
-# Frontend .env
-REACT_APP_API_URL=http://localhost:5000
-REACT_APP_STRIPE_KEY=pk_test_your_stripe_key
 ```
 
-## API Documentation 📚
+```ini
+# Frontend .env
+REACT_APP_API_URL='http://localhost:5000'
+```
 
-### Key Endpoints
-| Endpoint | Method | Description | Auth Required |
-|----------|--------|-------------|---------------|
-| `/api/auth/register` | POST | User registration | ❌ |
-| `/api/auth/login` | POST | User authentication | ❌ |
-| `/api/appointments` | GET | Get user appointments | ✅ |
-| `/api/doctors` | POST | Create new doctor (Admin) | ✅🔒 |
+```ini
+# Admin .env
+REACT_APP_API_URL='http://localhost:5000'
+```
 
-### Sample Request
+## 🔌 API Documentation
+
+### User Endpoints
+
+| Endpoint                      | Method | Description                    | Auth Required |
+| ----------------------------- | ------ | ------------------------------ | ------------- |
+| `/api/user/register`          | POST   | User registration              | ❌            |
+| `/api/user/login`             | POST   | User authentication            | ❌            |
+| `/api/user/getProfile`        | GET    | Get user profile               | ✅            |
+| `/api/user/updateProfile`     | POST   | Update user profile with image | ✅            |
+| `/api/user/bookAppointment`   | POST   | Book new appointment           | ✅            |
+| `/api/user/appointments`      | GET    | List user appointments         | ✅            |
+| `/api/user/cancelAppointment` | POST   | Cancel appointment             | ✅            |
+| `/api/user/makePayment`       | POST   | Process appointment payment    | ✅            |
+
+### Doctor Endpoints
+
+| Endpoint                            | Method | Description                   | Auth Required |
+| ----------------------------------- | ------ | ----------------------------- | ------------- |
+| `/api/doctor/login`                 | POST   | Doctor authentication         | ❌            |
+| `/api/doctor/list`                  | GET    | Get all doctors list          | ❌            |
+| `/api/doctor/appointments`          | GET    | Get doctor's appointments     | ✅            |
+| `/api/doctor/appointment-completed` | POST   | Mark appointment as completed | ✅            |
+| `/api/doctor/appointment-cancelled` | POST   | Mark appointment as cancelled | ✅            |
+| `/api/doctor/dashboard`             | GET    | Get doctor's dashboard data   | ✅            |
+| `/api/doctor/profile`               | GET    | Get doctor's profile          | ✅            |
+| `/api/doctor/update-profile`        | POST   | Update doctor's profile       | ✅            |
+
+### Admin Endpoints
+
+| Endpoint                         | Method | Description                 | Auth Required |
+| -------------------------------- | ------ | --------------------------- | ------------- |
+| `/api/admin/login`               | POST   | Admin authentication        | ❌            |
+| `/api/admin/add-doctor`          | POST   | Add new doctor with image   | ✅            |
+| `/api/admin/all-doctors`         | POST   | Get all doctors data        | ✅            |
+| `/api/admin/change-availability` | POST   | Update doctor availability  | ✅            |
+| `/api/admin/all-appointments`    | GET    | Get all system appointments | ✅            |
+| `/api/admin/cancel-appointment`  | POST   | Cancel any appointment      | ✅            |
+| `/api/admin/dashboard`           | GET    | Get admin dashboard data    | ✅            |
+
+### Sample API Requests
+
+#### Book Appointment
+
 ```javascript
-// Book Appointment
-fetch('/api/appointments', {
-  method: 'POST',
+fetch("/api/user/bookAppointment", {
+  method: "POST",
   headers: {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
+    token: "your_auth_token",
   },
   body: JSON.stringify({
-    doctorId: '65d8f3a1c4b9e12b45f7c8a1',
-    date: '2024-03-15',
-    time: '14:30'
+    doctorId: "123",
+    slotDate: "15_3_2024",
+    slotTime: "14:30",
+  }),
+});
+```
+
+#### Add Doctor (Admin)
+
+```javascript
+const formData = new FormData();
+formData.append("image", imageFile);
+formData.append("name", "Dr. John Doe");
+formData.append("email", "john@example.com");
+formData.append("password", "password123");
+formData.append("speciality", "Cardiologist");
+formData.append("degree", "MBBS, MD");
+formData.append("experience", "10 Years");
+formData.append("fees", 100);
+formData.append(
+  "address",
+  JSON.stringify({
+    line1: "123 Medical Center",
+    line2: "Healthcare Avenue",
   })
+);
+fetch("/api/admin/add-doctor", {
+  method: "POST",
+  headers: {
+    aToken: "admin_auth_token",
+  },
+  body: formData,
 });
 ```
 
@@ -137,35 +222,9 @@ fetch('/api/appointments', {
 ![Stripe](https://img.shields.io/badge/Stripe-008CDD?logo=stripe&logoColor=white)
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?logo=cloudinary&logoColor=white)
 
-## Contributing 🤝
-
-1. Fork the repository
-2. Create feature branch:  
-   `git checkout -b feature/amazing-feature`
-3. Commit changes:  
-   `git commit -m 'Add amazing feature'`
-4. Push to branch:  
-   `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
-## License 📄
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
 
 **Contact** 📧  
-[![Email](https://img.shields.io/badge/Contact-Email%20Us-blue?logo=gmail)](mailto:support@healthcare.com)  
-[![Twitter](https://img.shields.io/badge/Follow%20on-Twitter-1DA1F2?logo=twitter)](https://twitter.com/healthcare_sys)
-```
+[![Email](https://img.shields.io/badge/Contact-Email%20Us-blue?logo=gmail)](mailto:mitantank00@gmail.com)  
+[![Instagram](https://img.shields.io/badge/Follow%20on-Instagram-1DA1F2?logo=instagram)](https://www.instagram.com/__.mituu._)
 
-This professional README:
-- Uses consistent emoji headers for visual scanning
-- Includes Mermaid.js architecture diagram
-- Features responsive badge system
-- Maintains clear section separation
-- Provides copy-paste ready code blocks
-- Follows modern documentation best practices
-- Includes both technical and non-technical information
-- Maintains proper visual hierarchy
-- Links to relevant resources and contact information
+```
