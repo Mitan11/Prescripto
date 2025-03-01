@@ -4,7 +4,7 @@ import { DoctorContext } from "../../context/DoctorContext";
 import { AppContext } from "../../context/AppContext";
 import { FaCheck } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import SkeletonTableRow from "./SkeletonTableRow";
+import SkeletonTableRow from "../../components/SkeletonTableRow";
 
 function DoctorAppointment() {
   const {
@@ -45,7 +45,7 @@ function DoctorAppointment() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="bg-white border rounded text-sm max-h-[80vh] min-h-[50vh] overflow-y-scroll border-gray-300 w-full"
+          className="bg-white border rounded text-sm max-h-[76vh] min-h-[50vh] overflow-y-scroll border-gray-300 w-full"
         >
           <div className="max-sm:hidden grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 py-3 px-6 border-b border-gray-300 w-full place-items-center">
             <p>#</p>
@@ -72,10 +72,9 @@ function DoctorAppointment() {
             appointments.map((item, index) => (
               <motion.div
                 key={item._id}
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
                 className="flex flex-wrap justify-between max-sm:gap-5 max-sm:text-base sm:grid cursor-pointer grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 py-3 px-6 hover:bg-gray-200 transition-all duration-300 border-b border-gray-300 w-full place-items-center"
               >
                 <p className="max-sm:hidden">{index + 1}</p>

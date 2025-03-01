@@ -212,7 +212,7 @@ function AddDoctor() {
         Add Doctor
       </motion.p>
       <motion.div
-        className="bg-white px-8 py-8 border border-gray-300 rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll shadow"
+        className="bg-white px-8 py-8 border border-gray-300 rounded w-full max-w-4xl max-h-[76vh] overflow-y-scroll shadow"
         variants={containerVariants}
         initial="hidden"
         animate="visible"

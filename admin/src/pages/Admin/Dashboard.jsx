@@ -3,6 +3,7 @@ import { AdminContext } from "../../context/AdminContext";
 import { assets } from "../../assets/assets";
 import { FaXmark } from "react-icons/fa6";
 import { AppContext } from "../../context/AppContext";
+import DashboardSkeleton from "../../components/DashboardSkeleton";
 
 function Dashboard() {
   const { dashData, getDashData, cancelAppointment, aToken } =
@@ -16,7 +17,7 @@ function Dashboard() {
   }, [aToken]);
 
   return dashData ? (
-    <div className="m-5 w-full">
+    <div className="p-5 max-h-[90vh] overflow-y-scroll w-full">
       <div className="flex flex-wrap gap-3">
         <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all duration-300">
           <img className="w-14" src={assets.doctor_icon} alt="" />
@@ -43,13 +44,13 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="bg-white h-[50vh]">
+      <div className="bg-white">
         <div className="flex items-center gap-2.5 px-4 py-4 mt-10 rounded-t border border-gray-300">
           <img src={assets.list_icon} alt="" />
           <p className="text-xl font-semibold">Latest Appointments</p>
         </div>
         <div className="pt-4 border border-t-0 w-full border-gray-300">
-          {dashData.latestAppointments.map((item) => (
+        {dashData?.latestAppointments?.map((item) => (
             <div
               key={item._id}
               className="flex items-center gap-3 px-6 py-3 hover:bg-gray-100 transition-all duration-300 border-b border-gray-300"
@@ -84,7 +85,7 @@ function Dashboard() {
     </div>
   ) : (
     <div>
-      <h1>Loading...</h1>
+      <DashboardSkeleton />
     </div>
   );
 }

@@ -5,9 +5,11 @@ import { AdminContext } from "../context/AdminContext";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
+import { DoctorContext } from "../context/DoctorContext";
 
 function Navbar() {
   const { aToken, setAToken } = useContext(AdminContext);
+  const {dToken, setDToken} = useContext(DoctorContext)
   const navigate = useNavigate();
 
   const logout = () => {
@@ -15,6 +17,11 @@ function Navbar() {
     if (aToken) {
       setAToken("");
       localStorage.removeItem("aToken");
+      toast.success("Logout successful");
+    }
+    if (dToken) {
+      setDToken("");
+      localStorage.removeItem("dToken");
       toast.success("Logout successful");
     }
   };

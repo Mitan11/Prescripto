@@ -22,13 +22,13 @@ function AllAppointments() {
 
   return (
     <motion.div
-      className="w-full max-w-6xl m-5"
+      className="w-full max-w-6xl p-5"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <p className="mb-3 text-lg font-medium">All Appointments</p>
-      <div className="bg-white border border-gray-300 rounded text-sm max-h-[80vh] min-h-[60vh] overflow-y-scroll">
+      <div className="bg-white border border-gray-300 rounded text-sm max-h-[76vh] min-h-[60vh] overflow-y-scroll">
         {/* Table Header */}
         <div className="place-items-center hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-flow-col py-3 px-6 border-b border-gray-300 sticky top-0 bg-white">
           <p>#</p>
@@ -59,7 +59,7 @@ function AllAppointments() {
                 <img
                   src={item.userData.image}
                   alt=""
-                  className="w-8 h-8 rounded-full"
+                  className="w-8 h-8 rounded-full object-cover"
                 />
                 <p>{item.userData.name}</p>
               </div>
@@ -75,7 +75,7 @@ function AllAppointments() {
                 />
                 <p>{item.docData.name}</p>
               </div>
-              <p className="max-sm:hidden">
+              <p className="">
                 {currency}
                 {item.amount}
               </p>

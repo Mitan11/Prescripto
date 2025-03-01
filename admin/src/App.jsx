@@ -19,7 +19,7 @@ function App() {
   const { dToken } = useContext(DoctorContext);
 
   return aToken ? (
-    <div className="bg-[#F8F9FD] h-screen overflow-hidden">
+    <div className="bg-[#F8F9FD] h-screen overflow-hidden ">
       <Navbar />
       <div className="flex items-start">
         <Sidebar />
