@@ -17,7 +17,6 @@ function App() {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
 
-  // pre
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => { 

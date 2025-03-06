@@ -13,8 +13,6 @@ A comprehensive medical appointment management system built with MERN stack (Mon
 - [Configuration](#configuration-)
 - [API Documentation](#api-documentation-)
 - [Tech Stack](#tech-stack-)
-- [Contributing](#contributing-)
-- [License](#license-)
 
 ## Features ✨
 
@@ -30,7 +28,6 @@ A comprehensive medical appointment management system built with MERN stack (Mon
 
 - 🔐 JWT-based authentication system
 - 🗓 Real-time appointment scheduling
-- 💳 Integrated payment gateway (Stripe/RazorPay)
 - 📱 Responsive mobile-first design
 - 📊 Interactive dashboards with analytics
 
@@ -158,52 +155,6 @@ REACT_APP_API_URL='http://localhost:5000'
 | `/api/admin/cancel-appointment`  | POST   | Cancel any appointment      | ✅            |
 | `/api/admin/dashboard`           | GET    | Get admin dashboard data    | ✅            |
 
-### Sample API Requests
-
-#### Book Appointment
-
-```javascript
-fetch("/api/user/bookAppointment", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    token: "your_auth_token",
-  },
-  body: JSON.stringify({
-    doctorId: "123",
-    slotDate: "15_3_2024",
-    slotTime: "14:30",
-  }),
-});
-```
-
-#### Add Doctor (Admin)
-
-```javascript
-const formData = new FormData();
-formData.append("image", imageFile);
-formData.append("name", "Dr. John Doe");
-formData.append("email", "john@example.com");
-formData.append("password", "password123");
-formData.append("speciality", "Cardiologist");
-formData.append("degree", "MBBS, MD");
-formData.append("experience", "10 Years");
-formData.append("fees", 100);
-formData.append(
-  "address",
-  JSON.stringify({
-    line1: "123 Medical Center",
-    line2: "Healthcare Avenue",
-  })
-);
-fetch("/api/admin/add-doctor", {
-  method: "POST",
-  headers: {
-    aToken: "admin_auth_token",
-  },
-  body: formData,
-});
-```
 
 ## Tech Stack 🛠️
 
@@ -219,11 +170,9 @@ fetch("/api/admin/add-doctor", {
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
 
 **Services**  
-![Stripe](https://img.shields.io/badge/Stripe-008CDD?logo=stripe&logoColor=white)
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?logo=cloudinary&logoColor=white)
 
 
 **Contact** 📧  
 [![Email](https://img.shields.io/badge/Contact-Email%20Us-blue?logo=gmail)](mailto:mitantank00@gmail.com)  
 [![Instagram](https://img.shields.io/badge/Follow%20on-Instagram-1DA1F2?logo=instagram)](https://www.instagram.com/__.mituu._)
-
