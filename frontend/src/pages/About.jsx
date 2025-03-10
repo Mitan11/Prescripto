@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { assets } from "../assets/assets";
+import AboutImagesSection from "../components/AboutImagesSection";
 
 function About() {
   // Animation variants
@@ -17,8 +18,8 @@ function About() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.6, ease: "easeOut" }
     },
@@ -26,8 +27,8 @@ function About() {
 
   const cardVariants = {
     hidden: { opacity: 0, x: -30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
       transition: { duration: 0.5, ease: "backOut" }
     },
@@ -37,11 +38,11 @@ function About() {
   return (
     <div>
       {/* About Us Heading */}
-      <motion.div 
+      <motion.div
         className="text-center text-2xl text-gray-500"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{  amount: 0.2 }}
+        viewport={{ amount: 0.2 }}
         transition={{ duration: 0.5 }}
       >
         <p>
@@ -50,7 +51,7 @@ function About() {
       </motion.div>
 
       {/* Main Content Section */}
-      <motion.div 
+      <motion.div
         className="my-10 flex flex-col md:flex-row gap-12"
         variants={containerVariants}
         initial="hidden"
@@ -64,8 +65,8 @@ function About() {
           variants={itemVariants}
           transition={{ delay: 0.2 }}
         />
-        
-        <motion.div 
+
+        <motion.div
           className="flex flex-col justify-center gap-6 md:w-2/4 text-sm text-gray-600"
           variants={containerVariants}
         >
@@ -75,7 +76,7 @@ function About() {
             <b key="vision" className="text-gray-800">Our Vision</b>,
             "We believe in giving back to the community..."
           ].map((content, index) => (
-            <motion.p 
+            <motion.p
               key={index}
               variants={itemVariants}
               className="leading-relaxed"
@@ -87,7 +88,7 @@ function About() {
       </motion.div>
 
       {/* Why Choose Us Heading */}
-      <motion.div 
+      <motion.div
         className="text-xl my-4"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -100,11 +101,11 @@ function About() {
       </motion.div>
 
       {/* Cards Section */}
-      <motion.div 
+      <motion.div
         className="flex flex-col md:flex-row mb-20"
         variants={containerVariants}
-        initial={{opacity: 0 , y: 20}}
-        whileInView={{opacity: 1 , y: 0}}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ amount: 0.1 }}
       >
         {[
@@ -123,6 +124,7 @@ function About() {
           </motion.div>
         ))}
       </motion.div>
+      <AboutImagesSection />
     </div>
   );
 }

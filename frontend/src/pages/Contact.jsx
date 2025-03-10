@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { assets } from "../assets/assets";
+import ContactForm from "../components/ContactForm";
 
 function Contact() {
   // Animation variants
@@ -120,6 +121,27 @@ function Contact() {
           </motion.button>
         </motion.div>
       </motion.div>
+
+      <ContactForm/>
+
+      <motion.div
+        variants={imageVariants}
+        className="h-96 bg-gray-100 rounded-xl overflow-hidden"
+      >
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3102.34567658643!2d-77.03980448464716!3d38.92384777956228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7b7bce1485b19%3A0x9fc7bf09fd5d9baf!2sWashington%2C%20DC%2C%20USA!5e0!3m2!1sen!2sin!4v1718814348531!5m2!1sen!2sin"
+          className="w-full h-full"
+          loading="lazy"
+        ></iframe>
+      </motion.div>
+
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        className="fixed bottom-8 right-8 bg-blue-500 p-4 rounded-full cursor-pointer shadow-lg"
+      >
+        <span className="text-white">💬 Chat</span>
+      </motion.div>
+
     </motion.div>
   );
 }

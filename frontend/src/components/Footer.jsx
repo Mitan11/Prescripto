@@ -33,7 +33,7 @@ function Footer() {
       viewport={{  amount: 0.2 }} // Trigger animation once when 20% of the component is in view
       variants={containerVariants}
     >
-      <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm">
+      <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-20 text-sm">
         {/* Left section */}
         <motion.div variants={itemVariants}>
           <img className="mb-5 w-40" src={assets.logo} alt="" />

@@ -36,7 +36,14 @@ import General_physician from './General_physician.svg'
 import Gynecologist from './Gynecologist.svg'
 import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
-
+import a1 from './g-1.jpg'
+import a2 from './g-2.jpg'
+import a3 from './g-3.jpg'
+import a4 from './g-4.jpg'
+import a5 from './g-5.jpg'
+import a7 from './g-7.png'
+import a8 from './g-8.png'
+import a9 from './g-9.png'
 
 export const assets = {
     appointment_img,
@@ -83,6 +90,17 @@ export const specialityData = [
         speciality: 'Gastroenterologist',
         image: Gastroenterologist
     },
+]
+
+export const galleryImages = [
+    a1,
+    a2,
+    a3,
+    a4,
+    a5,
+    a7,
+    a8,
+    a9
 ]
 
 export const doctors = [
