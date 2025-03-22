@@ -5,7 +5,7 @@ import doctorModel from "../models/doctorModel.js";
 import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 import appointmentModel from "../models/appointmentModel.js";
-import razorpay from "razorpay";
+import nodemailer from "nodemailer";
 
 // api to register a user
 const registerUser = async (req, res) => {
@@ -285,4 +285,48 @@ const makePayment = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 }
-export { registerUser, loginUser, getProfile, updateProfile , bookAppointment, listAppointment, cancelAppointment , makePayment};
+
+const contactUs = async (req, res) => {
+    try {
+        // Extracting user details from the request body
+        const { name, email, message } = req.body;
+
+        // Check if all fields are provided
+        if (!name || !email || !message) {
+            return res.status(400).json({ success: false, message: "All fields are required" });
+        }
+
+        // Check if EMAIL and PASSWORD are configured
+        if (!process.env.EMAIL || !process.env.PASSWORD) {
+            return res.status(500).json({ success: false, message: "Email configuration missing" });
+        }
+
+        // Setting up the email transporter
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD,
+            },
+        });
+
+        // Mail options
+        const mailOptions = {
+            from: process.env.EMAIL,
+            to: process.env.TOEMAIL,
+            subject: `${name} Contacted via Website`,
+            text: `From: ${name} (${email})\n\nMessage:\n${message}`,
+        };
+
+        // Sending email
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).json({ success: true, message: "Message sent successfully" });
+    } catch (error) {
+        console.error("Error sending email:", error.message);
+        res.status(500).json({ success: false, message: "Something went wrong. Please try again later." });
+    }
+};
+
+
+export { registerUser, loginUser, getProfile, updateProfile , bookAppointment, listAppointment, cancelAppointment , makePayment , contactUs};

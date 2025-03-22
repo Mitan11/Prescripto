@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import axios from 'axios';
+import { AppContext } from '../context/AppContext';
 
 const ContactForm = () => {
     // Form State
+    const { backendUrl } = useContext(AppContext);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -15,8 +18,6 @@ const ContactForm = () => {
     // Validation & Submission State
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitSuccess, setSubmitSuccess] = useState(false);
-    const [submitError, setSubmitError] = useState('');
 
     // Input Validation
     const validateField = (name, value) => {
@@ -55,7 +56,6 @@ const ContactForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        setSubmitError('');
 
         // Validate all fields
         const isValid = Object.entries(formData).every(([name, value]) =>
@@ -67,14 +67,31 @@ const ContactForm = () => {
             return;
         }
 
-        try {
+        // Concatenate firstName and lastName
+        const fullName = `${formData.firstName} ${formData.lastName}`.trim();
 
-            toastr.success('Message sent successfully!');
-            setSubmitSuccess(true);
+        try {
+            // Send form data to the server
+            const { data } = await axios.post(`${backendUrl}/api/user/contactUs`, {
+                name: fullName,  // Use full name
+                email: formData.email,
+                message: formData.message
+            });
+
+            if (data.success) {
+                setFormData({
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    message: ''
+                });
+                toast.success(data.message);
+            } else {
+                toast.error(data.message);
+            }
         } catch (err) {
             console.error(err);
-            toast.error('Failed to send message. Please try again later.');
-            setSubmitError('Failed to send message. Please try again later.');
+            toast.error(err.message);
         } finally {
             setIsSubmitting(false);
         }
@@ -194,7 +211,7 @@ const ContactForm = () => {
                         <motion.span
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="flex items-center gap-2"
+                            className={`flex items-center gap-2 cursor-not-allowed`}
                         >
                             Sending...
                         </motion.span>
@@ -202,29 +219,6 @@ const ContactForm = () => {
                         <motion.span initial={{ opacity: 1 }}>Send Message</motion.span>
                     )}
                 </motion.button>
-
-                {/* Status Messages */}
-                {submitSuccess && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="absolute bottom-0 right-0 bg-green-100 p-4 rounded-lg flex items-center gap-2"
-                    >
-                        <FiCheckCircle className="text-green-600" />
-                        Message sent successfully!
-                    </motion.div>
-                )}
-
-                {submitError && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="absolute bottom-0 right-0 bg-red-100 p-4 rounded-lg flex items-center gap-2"
-                    >
-                        <FiAlertCircle className="text-red-600" />
-                        {submitError}
-                    </motion.div>
-                )}
             </form>
         </motion.div>
     );
