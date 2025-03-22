@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 import appointmentModel from "../models/appointmentModel.js";
 import nodemailer from "nodemailer";
+import reviewModel from "../models/reviewModel.js";
 
 // api to register a user
 const registerUser = async (req, res) => {
@@ -328,5 +329,109 @@ const contactUs = async (req, res) => {
     }
 };
 
+const addReview = async (req, res) => {
+    try {
+        const { userId, doctorId, rating, comment, appointmentId } = req.body;
 
-export { registerUser, loginUser, getProfile, updateProfile , bookAppointment, listAppointment, cancelAppointment , makePayment , contactUs};
+        // check if appointment is found and not cancelled
+        const appointment = await appointmentModel.findOne({
+            _id: appointmentId,
+            userId: userId,
+            isCompleted: true
+        });
+
+        if (!appointment || appointment.cancelled) {
+            return res.status(400).json({ success: false, message: "Appointment not found or cancelled" });
+        }
+
+        // Check if all required fields are provided
+        if (!userId || !doctorId || !rating || !comment || !appointmentId) {
+            return res.status(400).json({ success: false, message: "All fields are required" });
+        }
+
+        // Check if user exists
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        // Check if doctor exists
+        const doctor = await doctorModel.findById(doctorId);
+        if (!doctor) {
+            return res.status(404).json({ success: false, message: "Doctor not found" });
+        }
+
+        const existingReview = await reviewModel.findOne({ appointment: appointmentId });
+        if (existingReview) {
+            return res.status(400).json({
+                success: false,
+                message: "Review already exists for this appointment"
+            });
+        }
+
+        // Create new review
+        const review = new reviewModel({
+            user: userId,
+            doctor: doctorId,
+            appointment: appointmentId,
+            rating,
+            comment
+        });
+
+        // Save review
+        await review.save();
+
+        res.status(201).json({ success: true, message: "Review added successfully" });
+    } catch (error) {
+        console.error("Error adding review:", error.message);
+        res.status(500).json({ success: false, message: "Failed to add review" });
+    }
+};
+
+const getReviewedAppointments = async (req, res) => {
+    try {
+        const { userId } = req.body;
+
+        // Find all reviews by this user
+        const reviews = await reviewModel.find({ user: userId });
+        
+        // Extract appointment IDs from the reviews
+        const reviewedAppointmentIds = reviews.map(review => review.appointment.toString());
+
+        res.status(200).json({ 
+            success: true, 
+            reviewedAppointmentIds 
+        });
+    } catch (error) {
+        console.error("Error fetching reviewed appointments:", error.message);
+        res.status(500).json({ success: false, message: "Failed to fetch reviewed appointments" });
+    }
+};
+
+const getAllReviews = async (req, res) => {
+    try {
+        const { doctorId } = req.query;
+        
+        // Create query object
+        const query = {};
+        if (doctorId) {
+            query.doctor = doctorId;
+        }
+        
+        // Fetch reviews with optional doctor filter
+        const reviews = await reviewModel.find(query)
+            .sort({ createdAt: -1 })    
+            .populate('user', 'name image')
+            .populate('doctor', 'name speciality image');
+
+        res.status(200).json({ 
+            success: true, 
+            reviews 
+        });
+    } catch (error) {
+        console.error("Error fetching reviews:", error.message);
+        res.status(500).json({ success: false, message: "Failed to fetch reviews" });
+    }
+};
+
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, makePayment, contactUs, addReview, getReviewedAppointments, getAllReviews };

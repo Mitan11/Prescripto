@@ -7,6 +7,7 @@ import SkeletonDoctorInfo from "../components/SkeletonDoctorInfo";
 import { motion, AnimatePresence } from "framer-motion";
 import SkeletonBookingSlots from "../components/SkeletonBookingSlots";
 import SkeletonTimeSlots from "../components/SkeletonTimeSlots";
+import Testimonials from "../components/Testonomials";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 import axios from "axios";
@@ -351,6 +352,16 @@ function Appointment() {
           )}
         </motion.button>
       </motion.div>
+
+      {/* Doctor-specific Testimonials */}
+      {docInfo && (
+        <Testimonials 
+          doctorId={docId} 
+          title={`What Patients Say About Dr. ${docInfo.name}`}
+          subtitle={`Read reviews from patients who have consulted with Dr. ${docInfo.name} for their healthcare needs.`}
+          maxItems={5}
+        />
+      )}
 
       <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
     </motion.div>

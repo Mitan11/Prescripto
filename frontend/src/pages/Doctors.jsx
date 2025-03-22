@@ -58,7 +58,7 @@ function Doctors() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
-      <motion.p 
+      <motion.p
         className="text-gray-600"
         initial={{ y: 10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -69,9 +69,8 @@ function Doctors() {
 
       <div className="flex flex-col sm:flex-row items-start gap-5 mt-5">
         <motion.button
-          className={`py-1 px-3 border rounded text-sm transition-all sm:hidden ${
-            showFilter ? "bg-primary text-white" : ""
-          }`}
+          className={`py-1 px-3 border rounded text-sm transition-all sm:hidden ${showFilter ? "bg-primary text-white" : ""
+            }`}
           onClick={() => setShowFilter((prev) => !prev)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -80,9 +79,8 @@ function Doctors() {
         </motion.button>
 
         <motion.div
-          className={`flex-col gap-4 text-gray-600 text-sm ${
-            showFilter ? "flex" : "hidden sm:flex"
-          }`}
+          className={`flex-col gap-4 text-gray-600 text-sm ${showFilter ? "flex" : "hidden sm:flex"
+            }`}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -97,9 +95,8 @@ function Doctors() {
           ].map((specialty) => (
             <motion.p
               key={specialty}
-              className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${
-                speciality === specialty ? "bg-indigo-100 text-black" : ""
-              }`}
+              className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${speciality === specialty ? "bg-indigo-100 text-black" : ""
+                }`}
               onClick={() => {
                 speciality === specialty
                   ? navigate("/doctors")
@@ -108,14 +105,14 @@ function Doctors() {
               variants={filterVariants}
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.95 }}
-              
+
             >
               {specialty}
             </motion.p>
           ))}
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="w-full grid grid-cols-auto gap-4 gap-y-6"
           variants={containerVariants}
           initial="hidden"
@@ -138,9 +135,9 @@ function Doctors() {
                     scrollTo(0, 0);
                   }}
                 >
-                  <motion.img 
-                    className="bg-blue-50 w-full h-[230px] object-cover" 
-                    src={item.image} 
+                  <motion.img
+                    className="bg-blue-50 w-full h-[230px] object-cover"
+                    src={item.image}
                     alt=""
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -159,6 +156,18 @@ function Doctors() {
                       {item.name}
                     </p>
                     <p className="text-gray-600 text-sm">{item.speciality}</p>
+                    <div className="flex items-center gap-2">
+                      {item.averageRating ? (
+                        <div className="flex items-center gap-1">
+                          <span className="text-yellow-500">★</span>
+                          <span className="text-gray-600 text-sm">{item.averageRating.toFixed(1)}</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1">
+                          <span className="text-gray-600 text-sm">No rating yet</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               ))}

@@ -4,6 +4,7 @@ import SpecialityMenu from '../components/SpecialityMenu'
 import TopDoctors from '../components/TopDoctors'
 import Banner from '../components/Banner'
 import { motion } from 'framer-motion'
+import Testimonials from '../components/Testonomials'
 
 function Home() {
   return (
@@ -12,6 +13,11 @@ function Home() {
       <SpecialityMenu />
       <TopDoctors />
       <Banner />
+      <Testimonials 
+        title="What Our Patients Say"
+        subtitle="Discover why patients choose our healthcare services. Read honest experiences from real patients who have trusted our doctors with their health."
+        maxItems = {5}
+      />
     </motion.div>
   )
 }

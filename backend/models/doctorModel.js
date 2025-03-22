@@ -15,9 +15,17 @@ const doctorSchema = new mongoose.Schema({
     address: { type: Object, required: true },
     date: { type: Number, required: true },
     slots_booked: { type: Object, default: {} },
-}, { minimize: false }) // we can create default {} using minimise : {true}
+    averageRating: { type: Number, default: 0 },
+    ratingCount: { type: Number, default: 0 }
+}, { minimize: false, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
-// doctor model
-const doctorModel = mongoose.models.doctor || mongoose.model("doctor", doctorSchema)
+// Virtual for reviews
+doctorSchema.virtual("reviews", {
+    ref: "Review",
+    localField: "_id",
+    foreignField: "doctor",
+    justOne: false
+});
 
+const doctorModel = mongoose.models.doctor || mongoose.model("doctor", doctorSchema);
 export default doctorModel;

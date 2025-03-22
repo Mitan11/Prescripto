@@ -9,6 +9,11 @@ import MyAppointmentskeleton from "../components/MyAppointmentskeleton";
 function MyAppointments() {
   const { token, backendUrl, getDoctorsData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [currentAppointment, setCurrentAppointment] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const [reviewedAppointments, setReviewedAppointments] = useState([]);
 
   const [appointments, setAppointments] = useState([]);
   const months = [
@@ -27,6 +32,24 @@ function MyAppointments() {
     "Dec",
   ];
 
+  // Star Rating Component
+  const StarRating = ({ rating, setRating }) => {
+    return (
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button
+            key={star}
+            type="button"
+            onClick={() => setRating(star)}
+            className={`text-2xl ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+          >
+            ★
+          </button>
+        ))}
+      </div>
+    );
+  };
+
   const slotDateFormat = (slotDate) => {
     const dateArray = slotDate.split("_");
     return `${dateArray[0]} ${months[Number(dateArray[1])]} ${dateArray[2]}`;
@@ -42,13 +65,29 @@ function MyAppointments() {
       });
       if (data.success) {
         setAppointments(data.appointments.reverse());
-        console.log(data.appointments);
+        // Fetch list of reviewed appointments
+        await getReviewedAppointments();
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || 'Failed to fetch appointments');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Function to get list of appointments that have been reviewed
+  const getReviewedAppointments = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/user/reviewedAppointments`, {
+        headers: {
+          token,
+        },
+      });
+      if (data.success) {
+        setReviewedAppointments(data.reviewedAppointmentIds);
+      }
+    } catch (error) {
+      console.error('Error fetching reviewed appointments');
     }
   };
 
@@ -75,8 +114,7 @@ function MyAppointments() {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || 'Failed to cancel appointment');
     } finally {
       setIsLoading(false);
     }
@@ -104,8 +142,63 @@ function MyAppointments() {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || 'Failed to process payment');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Modified Add Review Handler
+  const handleAddReview = (appointment) => {
+    setCurrentAppointment(appointment);
+    setIsReviewModalOpen(true);
+  };
+
+  // Submit Review Handler
+  const submitReview = async () => {
+    if (!rating) {
+      toast.error('Please select a rating');
+      return;
+    }
+
+    if (!comment.trim()) {
+      toast.error('Please enter a comment');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const reviewData = {
+        appointmentId: currentAppointment._id,
+        doctorId: currentAppointment.docData._id,
+        rating,
+        comment
+      }
+
+      const { data } = await axios.post(
+        `${backendUrl}/api/user/addReview`,
+        reviewData,
+        {
+          headers: {
+            token,
+          },
+        }
+      );
+
+      if (data.success) {
+        toast.success('Review submitted successfully!');
+        // Add the current appointment ID to the reviewed list
+        setReviewedAppointments(prev => [...prev, currentAppointment._id]);
+        getUserAppointments();
+        setIsReviewModalOpen(false);
+        setRating(0);
+        setComment('');
+      } else {
+        toast.error(data.message || 'Failed to submit review');
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to submit review');
     } finally {
       setIsLoading(false);
     }
@@ -143,7 +236,7 @@ function MyAppointments() {
     tap: { scale: 0.95 },
   };
 
-  return ( 
+  return (
     <div>
       <motion.p
         className="pb-4 font-medium text-zinc-700 border-b"
@@ -178,9 +271,8 @@ function MyAppointments() {
             // Show appointments list when data exists
             appointments.map((item, index) => (
               <motion.div
-                className={`grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b ${
-                  item.cancelled ? "opacity-50 cursor-not-allowed" : ""
-                } ${isLoading ? "cursor-not-allowed" : ""}`}
+                className={`grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b ${item.cancelled ? "opacity-50 cursor-not-allowed" : ""
+                  } ${isLoading ? "cursor-not-allowed" : ""}`}
                 key={item._id}
                 variants={itemVariants}
                 transition={{ type: "spring" }}
@@ -245,9 +337,8 @@ function MyAppointments() {
                   )}
                   {!item.cancelled && !item.payment && (
                     <motion.button
-                      className={`text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300 ${
-                        isLoading ? "opacity-50 cursor-not-allowed" : ""
-                      }`}
+                      className={`text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300 ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                       variants={buttonVariants}
                       whileHover="hover"
                       whileTap="tap"
@@ -259,9 +350,8 @@ function MyAppointments() {
                   )}
                   {!item.cancelled && !item.payment && (
                     <motion.button
-                      className={`text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 ${
-                        isLoading ? "opacity-50 cursor-not-allowed" : ""
-                      }`}
+                      className={`text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                       variants={buttonVariants}
                       whileHover="hover"
                       whileTap="tap"
@@ -277,9 +367,26 @@ function MyAppointments() {
                     </motion.button>
                   )}
                   {item.isCompleted && (
-                    <motion.button className="sm:min-w-48 py-2 border cursor-not-allowed border-green-500 rounded text-green-500 ">
-                      Appointment completed
-                    </motion.button>
+                    <>
+                      <motion.button className="sm:min-w-48 py-2 border cursor-not-allowed border-green-500 rounded text-green-500 ">
+                        Appointment completed
+                      </motion.button>
+                      {!reviewedAppointments.includes(item._id) ? (
+                        <motion.button
+                          onClick={() => handleAddReview(item)}
+                          className="sm:min-w-48 py-2 border border-primary rounded text-primary hover:bg-primary hover:text-white transition-all duration-300"
+                        >
+                          Add Review
+                        </motion.button>
+                      ) : (
+                        <motion.button
+                          className="sm:min-w-48 py-2 border cursor-not-allowed bg-gray-100 border-gray-300 rounded text-gray-500"
+                          disabled
+                        >
+                          Review Submitted
+                        </motion.button>
+                      )}
+                    </>
                   )}
                 </motion.div>
               </motion.div>
@@ -287,6 +394,65 @@ function MyAppointments() {
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Review Modal */}
+      <AnimatePresence>
+        {isReviewModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={() => setIsReviewModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              className="bg-white rounded-lg p-6 w-full max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-semibold mb-4">Add Review</h3>
+
+              <div className="space-y-4">
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Rating</label>
+                  <StarRating rating={rating} setRating={setRating} />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Comment</label>
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+                    rows="4"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsReviewModalOpen(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={submitReview}
+                  disabled={isLoading || rating === 0}
+                  className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-dark disabled:opacity-50"
+                >
+                  {isLoading ? 'Submitting...' : 'Submit Review'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
