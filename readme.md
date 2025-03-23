@@ -183,3 +183,4 @@ REACT_APP_API_URL='http://localhost:5000'
 **Contact** 📧  
 [![Email](https://img.shields.io/badge/Contact-Email%20Us-blue?logo=gmail)](mailto:mitantank00@gmail.com)  
 [![Instagram](https://img.shields.io/badge/Follow%20on-Instagram-1DA1F2?logo=instagram)](https://www.instagram.com/__.mituu._)
+[![LinkedIn](https://img.shields.io/badge/Connect%20on-LinkedIn-0077B5?logo=linkedin)](https://www.linkedin.com/in/mitan-tank-986076247)
