@@ -7,10 +7,11 @@ import SkeletonDoctorInfo from "../components/SkeletonDoctorInfo";
 import { motion, AnimatePresence } from "framer-motion";
 import SkeletonBookingSlots from "../components/SkeletonBookingSlots";
 import SkeletonTimeSlots from "../components/SkeletonTimeSlots";
-import Testimonials from "../components/Testonomials";
+import Testimonials from "../components/Testimonials";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { FaStar } from "react-icons/fa";
 
 function Appointment() {
   const { docId } = useParams();
@@ -237,6 +238,9 @@ function Appointment() {
                   {docInfo.experience}
                 </motion.button>
               </motion.div>
+              <motion.p className="text-sm text-gray-500 mt-1">
+                <div className="flex items-center gap-1 text-yellow-300"><span className="text-gray-500">Rating : </span> <FaStar /> <span className="text-gray-500">{docInfo.averageRating}</span></div>
+              </motion.p>
             </motion.div>
 
             {/* About */}
@@ -287,11 +291,10 @@ function Appointment() {
           {docSlots.map((item, index) => (
             <motion.div
               key={index}
-              className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${
-                slotIndex === index
+              className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index
                   ? "bg-primary text-white"
                   : "border border-gray-200"
-              } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
               variants={slotVariants}
               whileHover="hover"
               whileTap="tap"
@@ -313,11 +316,10 @@ function Appointment() {
             docSlots[slotIndex].map((item, index) => (
               <motion.p
                 key={index}
-                className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
-                  item.time === slotTime
+                className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime
                     ? "bg-primary text-white"
                     : "text-gray-400 border border-gray-300"
-                } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                 variants={slotVariants}
                 whileHover="hover"
                 whileTap="tap"
@@ -333,9 +335,8 @@ function Appointment() {
         </motion.div>
 
         <motion.button
-          className={`flex items-center justify-center gap-2 bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6 ${
-            isLoading ? "opacity-50 cursor-not-allowed" : ""
-          } ${docInfo.available ? "" : "bg-primary/70 cursor-not-allowed"}`}
+          className={`flex items-center justify-center gap-2 bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6 ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+            } ${docInfo.available ? "" : "bg-primary/70 cursor-not-allowed"}`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300 }}
@@ -355,8 +356,8 @@ function Appointment() {
 
       {/* Doctor-specific Testimonials */}
       {docInfo && (
-        <Testimonials 
-          doctorId={docId} 
+        <Testimonials
+          doctorId={docId}
           title={`What Patients Say About Dr. ${docInfo.name}`}
           subtitle={`Read reviews from patients who have consulted with Dr. ${docInfo.name} for their healthcare needs.`}
           maxItems={5}

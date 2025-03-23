@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { assets } from "../assets/assets";
 import ContactForm from "../components/ContactForm";
+import { FaWhatsapp } from "react-icons/fa";
 
 function Contact() {
   // Animation variants
@@ -139,7 +140,7 @@ function Contact() {
         whileHover={{ scale: 1.1 }}
         className="fixed bottom-8 right-8 bg-blue-500 p-4 rounded-full cursor-pointer shadow-lg"
       >
-        <span className="text-white">💬 Chat</span>
+        <a className="text-white flex items-center gap-1" href="https://api.whatsapp.com/message/PCCFHVZIEKP4B1?autoload=1&app_absent=0" target="_blank" ><FaWhatsapp className="text-lg" /> Chat</a>
       </motion.div>
 
     </motion.div>

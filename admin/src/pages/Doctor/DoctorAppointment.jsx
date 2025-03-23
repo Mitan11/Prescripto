@@ -120,14 +120,14 @@ function DoctorAppointment() {
                     >
                       <FaCheck className="text-green-400" />
                     </motion.button>
-                    <motion.button
+                    {item.payment ? <motion.button
                       onClick={() => cancelledAppointment(item._id)}
                       whileTap={{ scale: 0.9 }}
                       whileHover={{ scale: 1.1 }}
                       className="rounded-full text-white w-8 h-8 bg-red-100 hover:bg-red-200 transition-all duration-300 flex items-center justify-center shadow-sm"
                     >
                       <FaXmark className="text-red-400" />
-                    </motion.button>
+                    </motion.button> : ""}
                   </div>
                 )}
               </motion.div>

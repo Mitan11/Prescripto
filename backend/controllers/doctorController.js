@@ -148,6 +148,9 @@ const doctorDashboard = async (req, res) => {
         // getting the appointments
         const appointments = await appointmentModel.find({ docId })
 
+        // getting the rating
+        const doctorData = await doctorModel.findById(docId).select("averageRating ratingCount")
+
         // calculating the earnings
         let earnings = 0
         appointments.map(item => {
@@ -164,11 +167,15 @@ const doctorDashboard = async (req, res) => {
             }
         })
 
+        // calculating the rating
+        const totalRating = doctorData.averageRating * doctorData.ratingCount
+
         const dashData = {
             earnings,
             patients: patients.length,
             appointments: appointments.length,
             latestAppointments: appointments.reverse().slice(0, 5),
+            rating: totalRating / doctorData.ratingCount
         }
 
         res.json({ success: true, dashData })

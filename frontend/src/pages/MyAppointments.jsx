@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import NoAppointments from "../components/NoAppointments";
 import MyAppointmentskeleton from "../components/MyAppointmentskeleton";
+import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 function MyAppointments() {
   const { token, backendUrl, getDoctorsData } = useContext(AppContext);
@@ -32,20 +33,43 @@ function MyAppointments() {
     "Dec",
   ];
 
-  // Star Rating Component
+  // Enhanced Star Rating Component with half-star support
   const StarRating = ({ rating, setRating }) => {
+    const handleStarClick = (index, event) => {
+      const starRect = event.currentTarget.getBoundingClientRect();
+      const starCenter = starRect.left + starRect.width / 2;
+      const clickPosition = event.clientX;
+      
+      // If clicked on left half of star, set half star
+      if (clickPosition < starCenter) {
+        setRating(index - 0.5);
+      } else {
+        setRating(index);
+      }
+    };
+
     return (
       <div className="flex gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
             type="button"
-            onClick={() => setRating(star)}
-            className={`text-2xl ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+            onClick={(e) => handleStarClick(star, e)}
+            className="text-2xl relative cursor-pointer"
+            title={`${star - 0.5} or ${star} stars`}
           >
-            ★
+            {rating >= star ? (
+              <FaStar className="text-yellow-400" />
+            ) : rating >= star - 0.5 ? (
+              <FaStarHalfAlt className="text-yellow-400" />
+            ) : (
+              <FaStar className="text-gray-300" />
+            )}
           </button>
         ))}
+        <span className="ml-2 text-sm text-gray-600">
+          {rating ? `${rating.toFixed(1)} stars` : "Select rating"}
+        </span>
       </div>
     );
   };
@@ -156,7 +180,7 @@ function MyAppointments() {
 
   // Submit Review Handler
   const submitReview = async () => {
-    if (!rating) {
+    if (rating <= 0) {
       toast.error('Please select a rating');
       return;
     }
@@ -335,7 +359,7 @@ function MyAppointments() {
                       Paid
                     </button>
                   )}
-                  {!item.cancelled && !item.payment && (
+                  {!item.cancelled && !item.payment && !item.isCompleted && (
                     <motion.button
                       className={`text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300 ${isLoading ? "opacity-50 cursor-not-allowed" : ""
                         }`}
@@ -348,7 +372,7 @@ function MyAppointments() {
                       Pay Online
                     </motion.button>
                   )}
-                  {!item.cancelled && !item.payment && (
+                  {!item.cancelled && !item.payment && !item.isCompleted && (
                     <motion.button
                       className={`text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 ${isLoading ? "opacity-50 cursor-not-allowed" : ""
                         }`}
@@ -414,10 +438,24 @@ function MyAppointments() {
             >
               <h3 className="text-lg font-semibold mb-4">Add Review</h3>
 
-              <div className="space-y-4">
+              {currentAppointment && (
+                <div className="flex items-center mb-4 p-3 bg-gray-50 rounded-md">
+                  <img 
+                    src={currentAppointment.docData.image} 
+                    alt={currentAppointment.docData.name}
+                    className="w-16 h-16 object-cover rounded-full mr-3" 
+                  />
+                  <div>
+                    <p className="font-medium">{currentAppointment.docData.name}</p>
+                    <p className="text-sm text-gray-600">{currentAppointment.docData.speciality}</p>
+                  </div>
+                </div>
+              )}
 
+              <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Rating</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+                  <p className="text-xs text-gray-500 mb-2">Click on the left half of a star for half rating or right half for full rating</p>
                   <StarRating rating={rating} setRating={setRating} />
                 </div>
 
@@ -428,6 +466,7 @@ function MyAppointments() {
                     onChange={(e) => setComment(e.target.value)}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
                     rows="4"
+                    placeholder="Share your experience with the doctor..."
                   />
                 </div>
               </div>
@@ -443,7 +482,7 @@ function MyAppointments() {
                 <button
                   type="button"
                   onClick={submitReview}
-                  disabled={isLoading || rating === 0}
+                  disabled={isLoading || rating <= 0}
                   className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-dark disabled:opacity-50"
                 >
                   {isLoading ? 'Submitting...' : 'Submit Review'}

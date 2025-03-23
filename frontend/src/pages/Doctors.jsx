@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { AppContext } from "../context/AppContext";
 import { AnimatePresence, motion } from "framer-motion";
 import SkeletonCard from "../components/SkeletonCard";
+import { FaStar } from "react-icons/fa";
 
 function Doctors() {
   const { speciality } = useParams();
@@ -159,7 +160,7 @@ function Doctors() {
                     <div className="flex items-center gap-2">
                       {item.averageRating ? (
                         <div className="flex items-center gap-1">
-                          <span className="text-yellow-500">★</span>
+                          <FaStar className="text-yellow-500 text-sm" />
                           <span className="text-gray-600 text-sm">{item.averageRating.toFixed(1)}</span>
                         </div>
                       ) : (

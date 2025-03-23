@@ -4,7 +4,7 @@ import SpecialityMenu from '../components/SpecialityMenu'
 import TopDoctors from '../components/TopDoctors'
 import Banner from '../components/Banner'
 import { motion } from 'framer-motion'
-import Testimonials from '../components/Testonomials'
+import Testimonials from '../components/Testimonials'
 
 function Home() {
   return (
