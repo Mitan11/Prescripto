@@ -1,9 +1,11 @@
 import React, { useEffect, useContext } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import { assets } from "../../assets/assets";
-import { FaXmark } from "react-icons/fa6";
+import { FaCheck, FaXmark } from "react-icons/fa6";
 import { AppContext } from "../../context/AppContext";
 import DashboardSkeleton from "../../components/DashboardSkeleton";
+import { motion } from "framer-motion";
+
 
 function Dashboard() {
   const { dashData, getDashData, cancelAppointment, aToken } =
@@ -65,18 +67,32 @@ function Dashboard() {
                 <p className="text-gray-600">{slotDateFormat(item.slotDate)}</p>
               </div>
               {item.cancelled ? (
-                  <p className="text-red-400 text-xs font-medium cursor-not-allowed">
-                    Cancelled
-                  </p>
-                ) : (
-                  <button
-                    onClick={() => cancelAppointment(item._id)}
-                    className="rounded-full text-white px-4 w-8 h-8 bg-red-100 hover:bg-red-200 transition-all duration-300 cursor-pointer flex items-center justify-center"
+                  <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-red-400 text-xs"
                   >
-                    <span className="text-red-400">
+                    Cancelled
+                  </motion.p>
+                ) : item.isCompleted ? (
+                  <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-green-400 text-xs"
+                  >
+                    Completed
+                  </motion.p>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <motion.button
+                      onClick={() => cancelledAppointment(item._id)}
+                      whileTap={{ scale: 0.9 }}
+                      whileHover={{ scale: 1.1 }}
+                      className="rounded-full text-white w-8 h-8 bg-red-100 hover:bg-red-200 transition-all duration-300 flex items-center justify-center shadow-sm"
+                    >
                       <FaXmark className="text-red-400" />
-                    </span>
-                  </button>
+                    </motion.button>
+                  </div>
                 )}
             </div>
           ))}

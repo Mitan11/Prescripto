@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { FaArrowRight, FaEye, FaEyeSlash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import { DoctorContext } from "../context/DoctorContext";
+import { useNavigate } from "react-router";
 
 function Login() {
   const [state, setState] = useState("Admin");
@@ -15,6 +16,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const { setAToken, backendUrl } = useContext(AdminContext);
   const { setDToken } = useContext(DoctorContext);
+  const navigate = useNavigate();
 
   const validateForm = () => {
     let isValid = true;
@@ -52,6 +54,7 @@ function Login() {
           localStorage.setItem("aToken", data.token);
           setAToken(data.token);
           toast.success("Login successful");
+          navigate("/admin-dashboard");
         } else {
           toast.error(data.message);
         }
@@ -64,6 +67,7 @@ function Login() {
           localStorage.setItem("dToken", data.token);
           setDToken(data.token);  
           toast.success("Login successful");
+          navigate("/doctor-dashboard");
         } else {
           toast.error(data.message);
         }

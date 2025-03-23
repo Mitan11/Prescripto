@@ -102,6 +102,9 @@ ADMIN_EMAIL = 'admin@gmail.com'
 ADMIN_PASSWORD = 'admin123'
 JWT_SECRET = "your_jwt_secret_key"
 CURRENCY = "INR"
+EMAIL = "send@gmail.com"
+PASSWORD = "yourAppPassword"
+TOEMAIL ="recipient@gmail.com"
 
 ```
 
@@ -129,6 +132,10 @@ REACT_APP_API_URL='http://localhost:5000'
 | `/api/user/appointments`      | GET    | List user appointments         | ✅            |
 | `/api/user/cancelAppointment` | POST   | Cancel appointment             | ✅            |
 | `/api/user/makePayment`       | POST   | Process appointment payment    | ✅            |
+| `/api/user/contactUs`         | POST   | Send contact/inquiry message   | ❌            |
+| `/api/user/addReview`         | POST   | Add review for a doctor        | ✅            |
+| `/api/user/reviewedAppointments` | GET | Get user's reviewed appointments | ✅          |
+| `/api/user/reviews`           | GET    | Get all reviews for testimonials | ❌          |
 
 ### Doctor Endpoints
 

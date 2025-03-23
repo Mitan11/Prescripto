@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AdminContext } from "./context/AdminContext";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import Dashboard from "./pages/Admin/Dashboard";
 import AllApointments from "./pages/Admin/AllApointments";
 import AddDoctor from "./pages/Admin/AddDoctor";
@@ -24,8 +24,9 @@ function App() {
       <div className="flex items-start">
         <Sidebar />
         <Routes>
+          {/* Redirect root path to an appropriate page */}
           {/* Admin Routes */}
-          <Route path="/" element={<></>} />
+          <Route path="/" element={<Navigate to={aToken ? "/admin-dashboard" : ""} />} />
           <Route path="/admin-dashboard" element={<Dashboard />} />
           <Route path="/all-appointments" element={<AllApointments />} />
           <Route path="/add-doctor" element={<AddDoctor />} />
@@ -40,7 +41,10 @@ function App() {
         <Sidebar />
         <Routes>
           {/* Doctor Routes */}
-          <Route path="/" element={<></>} />
+          <Route path="/" element={<Navigate to={dToken ? "/doctor-dashboard" : ""} />} />
+          <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+          <Route path="/doctor-profile" element={<DoctorProfile />} />
+          <Route path="/doctor-appointment" element={<DoctorAppointment />} />
           <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
           <Route path="/doctor-profile" element={<DoctorProfile />} />
           <Route

@@ -3,6 +3,7 @@ import { AdminContext } from "../../context/AdminContext";
 import NoDataFound from "../../components/NoDataFound";
 import SkeletonCard from "../../components/SkeletonCard";
 import { motion } from "framer-motion";
+import { FaStar } from "react-icons/fa6";
 
 function DoctorsList() {
   const { doctors, getAllDoctors, aToken, changeAvailability } =
@@ -61,6 +62,18 @@ function DoctorsList() {
                   {item.name}
                 </p>
                 <p className="text-sm text-zinc-600">{item.speciality}</p>
+                <div className="flex items-center gap-2">
+                  {item.averageRating ? (
+                    <div className="flex items-center gap-1">
+                      <FaStar className="text-yellow-500 text-sm" />
+                      <span className="text-gray-600 text-sm">{item.averageRating.toFixed(1)}</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <span className="text-gray-600 text-sm">No rating yet</span>
+                    </div>
+                  )}
+                </div>
                 <div className="flex items-center gap-1 text-sm mt-2">
                   <input
                     type="checkbox"

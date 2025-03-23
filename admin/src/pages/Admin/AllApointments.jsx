@@ -11,7 +11,7 @@ function AllAppointments() {
   const { calculateAge, currency, slotDateFormat } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  
+
 
   useEffect(() => {
     if (aToken) {
@@ -46,7 +46,7 @@ function AllAppointments() {
             .fill()
             .map((_, index) => <TableRowSkeleton key={index} />)
         ) : appointments.length > 0 ? (
-          appointments.map((item, index) => (
+          appointments.reverse().map((item, index) => (
             <motion.div
               key={item._id}
               className="place-items-center flex flex-wrap justify-between max-sm:gap-2 sm:grid sm:grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] items-center text-gray-500 py-3 px-6 border-b border-gray-300 hover:bg-gray-50 transition-all duration-300 cursor-pointer"
@@ -83,12 +83,18 @@ function AllAppointments() {
                 <p className="text-red-400 text-xs font-medium cursor-not-allowed">
                   Cancelled
                 </p>
+              ) : item.payment || item.isCompleted ? (
+                <span className="text-green-400 text-xs font-medium cursor-not-allowed">
+                  Completed
+                </span>
               ) : (
                 <button
                   onClick={() => cancelAppointment(item._id)}
                   className="rounded-full text-white px-4 w-8 h-8 bg-red-100 hover:bg-red-200 transition-all duration-300 cursor-pointer flex items-center justify-center"
                 >
-                  <span><FaXmark className="text-red-400" /></span>
+                  <span>
+                    <FaXmark className="text-red-400" />
+                  </span>
                 </button>
               )}
             </motion.div>

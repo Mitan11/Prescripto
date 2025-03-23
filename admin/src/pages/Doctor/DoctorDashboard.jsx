@@ -76,7 +76,7 @@ function DoctorDashboard() {
                 <p className="font-medium text-gray-800">{item.userData.name}</p>
                 <p className="text-gray-600">{slotDateFormat(item.slotDate)}</p>
               </div>
-              {item.cancelled || item.isCompleted ? (
+              {item.cancelled || !item.isCompleted ? (
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

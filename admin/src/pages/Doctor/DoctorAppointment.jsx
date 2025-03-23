@@ -120,7 +120,7 @@ function DoctorAppointment() {
                     >
                       <FaCheck className="text-green-400" />
                     </motion.button>
-                    {item.payment ? <motion.button
+                    {!item.payment ? <motion.button
                       onClick={() => cancelledAppointment(item._id)}
                       whileTap={{ scale: 0.9 }}
                       whileHover={{ scale: 1.1 }}
