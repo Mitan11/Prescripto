@@ -238,9 +238,9 @@ function Appointment() {
                   {docInfo.experience}
                 </motion.button>
               </motion.div>
-              <motion.p className="text-sm text-gray-500 mt-1">
+              <motion.div className="text-sm text-gray-500 mt-1">
                 <div className="flex items-center gap-1 text-yellow-300"><span className="text-gray-500">Rating : </span> <FaStar /> <span className="text-gray-500">{docInfo.averageRating}</span></div>
-              </motion.p>
+              </motion.div>
             </motion.div>
 
             {/* About */}

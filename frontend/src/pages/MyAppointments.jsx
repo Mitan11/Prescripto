@@ -11,6 +11,7 @@ function MyAppointments() {
   const { token, backendUrl, getDoctorsData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [currentAppointment, setCurrentAppointment] = useState(null);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -39,7 +40,7 @@ function MyAppointments() {
       const starRect = event.currentTarget.getBoundingClientRect();
       const starCenter = starRect.left + starRect.width / 2;
       const clickPosition = event.clientX;
-      
+
       // If clicked on left half of star, set half star
       if (clickPosition < starCenter) {
         setRating(index - 0.5);
@@ -158,10 +159,11 @@ function MyAppointments() {
           },
         }
       );
-
+  
       if (data.success) {
         toast.success(data.message);
         getUserAppointments();
+        setIsPaymentModalOpen(false); // Close the payment modal
       } else {
         toast.error(data.message);
       }
@@ -226,6 +228,12 @@ function MyAppointments() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Open Payment Modal and Set Current Appointment
+  const handleOpenPaymentModal = (appointment) => {
+    setCurrentAppointment(appointment);
+    setIsPaymentModalOpen(true);
   };
 
   useEffect(() => {
@@ -367,7 +375,7 @@ function MyAppointments() {
                       whileHover="hover"
                       whileTap="tap"
                       disabled={isLoading}
-                      onClick={() => makePayment(item._id)}
+                      onClick={() => handleOpenPaymentModal(item)}
                     >
                       Pay Online
                     </motion.button>
@@ -419,6 +427,62 @@ function MyAppointments() {
         </AnimatePresence>
       </motion.div>
 
+      {/* Payment Modal */}
+      <AnimatePresence>
+        {isPaymentModalOpen && currentAppointment && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={() => setIsPaymentModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              className="bg-white rounded-lg p-6 w-full max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-semibold mb-4">Payment Details</h3>
+
+              <div className="flex items-center mb-4 p-3 bg-gray-50 rounded-md">
+                <img
+                  src={currentAppointment.docData.image}
+                  alt={currentAppointment.docData.name}
+                  className="w-16 h-16 object-cover rounded-full mr-3"
+                />
+                <div>
+                  <p className="font-medium">{currentAppointment.docData.name}</p>
+                  <p className="text-sm text-gray-600">{currentAppointment.docData.speciality}</p>
+                  <p className="text-sm font-medium mt-1">
+                    Fee: ₹{currentAppointment.amount}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsPaymentModalOpen(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => makePayment(currentAppointment._id)}
+                  disabled={isLoading}
+                  className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-dark disabled:opacity-50"
+                >
+                  {isLoading ? 'Processing...' : 'Confirm Payment'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Review Modal */}
       <AnimatePresence>
         {isReviewModalOpen && (
@@ -440,10 +504,10 @@ function MyAppointments() {
 
               {currentAppointment && (
                 <div className="flex items-center mb-4 p-3 bg-gray-50 rounded-md">
-                  <img 
-                    src={currentAppointment.docData.image} 
+                  <img
+                    src={currentAppointment.docData.image}
                     alt={currentAppointment.docData.name}
-                    className="w-16 h-16 object-cover rounded-full mr-3" 
+                    className="w-16 h-16 object-cover rounded-full mr-3"
                   />
                   <div>
                     <p className="font-medium">{currentAppointment.docData.name}</p>
