@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 function Dashboard() {
   const { dashData, getDashData, cancelAppointment, aToken } =
     useContext(AdminContext);
-    const {slotDateFormat} = useContext(AppContext)
+  const { slotDateFormat } = useContext(AppContext)
 
   useEffect(() => {
     if (aToken) {
@@ -52,7 +52,7 @@ function Dashboard() {
           <p className="text-xl font-semibold">Latest Appointments</p>
         </div>
         <div className="pt-4 border border-t-0 w-full border-gray-300">
-        {dashData?.latestAppointments?.map((item) => (
+          {dashData?.latestAppointments?.map((item) => (
             <div
               key={item._id}
               className="flex items-center gap-3 px-6 py-3 hover:bg-gray-100 transition-all duration-300 border-b border-gray-300"
@@ -67,33 +67,23 @@ function Dashboard() {
                 <p className="text-gray-600">{slotDateFormat(item.slotDate)}</p>
               </div>
               {item.cancelled ? (
-                  <motion.p 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-red-400 text-xs"
-                  >
-                    Cancelled
-                  </motion.p>
-                ) : item.isCompleted ? (
-                  <motion.p 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-green-400 text-xs"
-                  >
-                    Completed
-                  </motion.p>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <motion.button
-                      onClick={() => cancelledAppointment(item._id)}
-                      whileTap={{ scale: 0.9 }}
-                      whileHover={{ scale: 1.1 }}
-                      className="rounded-full text-white w-8 h-8 bg-red-100 hover:bg-red-200 transition-all duration-300 flex items-center justify-center shadow-sm"
-                    >
-                      <FaXmark className="text-red-400" />
-                    </motion.button>
-                  </div>
-                )}
+                <p className="text-red-400 text-xs font-medium cursor-not-allowed">
+                  Cancelled
+                </p>
+              ) : item.payment || item.isCompleted ? (
+                <span className="text-green-400 text-xs font-medium cursor-not-allowed">
+                  Completed
+                </span>
+              ) : (
+                <button
+                  onClick={() => cancelAppointment(item._id)}
+                  className="rounded-full text-white px-4 w-8 h-8 bg-red-100 hover:bg-red-200 transition-all duration-300 cursor-pointer flex items-center justify-center"
+                >
+                  <span>
+                    <FaXmark className="text-red-400" />
+                  </span>
+                </button>
+              )}
             </div>
           ))}
         </div>

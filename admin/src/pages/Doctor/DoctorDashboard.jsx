@@ -49,7 +49,7 @@ function DoctorDashboard() {
           <div>
             <div className='flex items-center gap-1'>
               <FaStar className='text-yellow-300' />
-              <p className="text-xl font-semibold ">{dashData.rating}</p>
+              <p className="text-xl font-semibold ">{dashData.rating.toFixed(1)}</p>
             </div>
             <p className="text-sm text-gray-500">Rating</p>
           </div>
@@ -76,7 +76,7 @@ function DoctorDashboard() {
                 <p className="font-medium text-gray-800">{item.userData.name}</p>
                 <p className="text-gray-600">{slotDateFormat(item.slotDate)}</p>
               </div>
-              {item.cancelled || !item.isCompleted ? (
+              {item.cancelled ? (
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -84,7 +84,7 @@ function DoctorDashboard() {
                 >
                   Cancelled
                 </motion.p>
-              ) : item.isCompleted || item.payment ? (
+              ) : item.isCompleted ? (
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -102,14 +102,14 @@ function DoctorDashboard() {
                   >
                     <FaCheck className="text-green-400" />
                   </motion.button>
-                  <motion.button
+                  {!item.payment ? <motion.button
                     onClick={() => cancelledAppointment(item._id)}
                     whileTap={{ scale: 0.9 }}
                     whileHover={{ scale: 1.1 }}
                     className="rounded-full text-white w-8 h-8 bg-red-100 hover:bg-red-200 transition-all duration-300 flex items-center justify-center shadow-sm"
                   >
                     <FaXmark className="text-red-400" />
-                  </motion.button>
+                  </motion.button> : ""}
                 </div>
               )}
             </div>

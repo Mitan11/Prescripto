@@ -239,7 +239,7 @@ function Appointment() {
                 </motion.button>
               </motion.div>
               <motion.div className="text-sm text-gray-500 mt-1">
-                <div className="flex items-center gap-1 text-yellow-300"><span className="text-gray-500">Rating : </span> <FaStar /> <span className="text-gray-500">{docInfo.averageRating}</span></div>
+                <div className="flex items-center gap-1 text-yellow-300"><span className="text-gray-500">Rating : </span> <FaStar /> <span className="text-gray-500">{docInfo.averageRating.toFixed(1)}</span></div>
               </motion.div>
             </motion.div>
 
@@ -292,8 +292,8 @@ function Appointment() {
             <motion.div
               key={index}
               className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index
-                  ? "bg-primary text-white"
-                  : "border border-gray-200"
+                ? "bg-primary text-white"
+                : "border border-gray-200"
                 } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
               variants={slotVariants}
               whileHover="hover"
@@ -317,8 +317,8 @@ function Appointment() {
               <motion.p
                 key={index}
                 className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime
-                    ? "bg-primary text-white"
-                    : "text-gray-400 border border-gray-300"
+                  ? "bg-primary text-white"
+                  : "text-gray-400 border border-gray-300"
                   } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                 variants={slotVariants}
                 whileHover="hover"
