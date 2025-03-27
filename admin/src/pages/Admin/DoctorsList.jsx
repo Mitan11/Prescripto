@@ -3,10 +3,12 @@ import { AdminContext } from "../../context/AdminContext";
 import NoDataFound from "../../components/NoDataFound";
 import SkeletonCard from "../../components/SkeletonCard";
 import { motion } from "framer-motion";
-import { FaStar } from "react-icons/fa6";
+import { FaStar, FaTrash } from "react-icons/fa6";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 function DoctorsList() {
-  const { doctors, getAllDoctors, aToken, changeAvailability } =
+  const { doctors, getAllDoctors, backendUrl, aToken, changeAvailability } =
     useContext(AdminContext);
   const [loading, setLoading] = useState(true);
 
@@ -16,6 +18,25 @@ function DoctorsList() {
       getAllDoctors().finally(() => setLoading(false));
     }
   }, [aToken]);
+
+  const deleteDoctor = async (docId) => {
+    try {
+
+      if (confirm("confirm you want to delete")) {
+        const { data } = await axios.post(backendUrl + "/api/admin/remove-doctor", { docId }, { headers: { aToken } })
+        if (data.success) {
+          toast.success(data.message)
+          getAllDoctors()
+        } else {
+          toast.error(data.message)
+        }
+      }
+
+    } catch (error) {
+      toast.error(error.message)
+      console.log(error);
+    }
+  }
 
   // Motion variants for each card (Lazy Scroll Effect)
   const cardVariants = {
@@ -74,13 +95,28 @@ function DoctorsList() {
                     </div>
                   )}
                 </div>
-                <div className="flex items-center gap-1 text-sm mt-2">
-                  <input
-                    type="checkbox"
-                    checked={item.available}
-                    onChange={() => changeAvailability(item._id)}
-                  />
-                  <p>{item.available ? "Available" : "Not Available"}</p>
+                <div className="flex items-center justify-between gap-1 text-sm mt-2">
+                  <div className="flex justify-center items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={item.available}
+                      onChange={() => changeAvailability(item._id)}
+                    />
+                    <p>{item.available ? "Available" : "Not Available"}</p>
+
+                  </div>
+                  <div>
+                    <button
+                      className="flex items-center text-red-600 cursor-pointer"
+                      onClick={() => {
+                        deleteDoctor(item._id);
+                      }
+                      }
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+
                 </div>
               </div>
             </motion.div>

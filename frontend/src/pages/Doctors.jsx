@@ -4,6 +4,7 @@ import { AppContext } from "../context/AppContext";
 import { AnimatePresence, motion } from "framer-motion";
 import SkeletonCard from "../components/SkeletonCard";
 import { FaStar } from "react-icons/fa";
+import DoctorNotFound from "../components/DoctorNotFound";
 
 function Doctors() {
   const { speciality } = useParams();
@@ -11,6 +12,8 @@ function Doctors() {
   const navigate = useNavigate();
   const [filterdoc, setFilterdoc] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const applyFilter = () => {
     if (speciality) {
       setFilterdoc(doctors.filter((doc) => doc.speciality === speciality));
@@ -20,7 +23,13 @@ function Doctors() {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     applyFilter();
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [doctors, speciality]);
 
   const containerVariants = {
@@ -70,8 +79,7 @@ function Doctors() {
 
       <div className="flex flex-col sm:flex-row items-start gap-5 mt-5">
         <motion.button
-          className={`py-1 px-3 border rounded text-sm transition-all sm:hidden ${showFilter ? "bg-primary text-white" : ""
-            }`}
+          className={`py-1 px-3 border rounded text-sm transition-all sm:hidden ${showFilter ? "bg-primary text-white" : ""}`}
           onClick={() => setShowFilter((prev) => !prev)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -80,8 +88,7 @@ function Doctors() {
         </motion.button>
 
         <motion.div
-          className={`flex-col gap-4 text-gray-600 text-sm ${showFilter ? "flex" : "hidden sm:flex"
-            }`}
+          className={`flex-col gap-4 text-gray-600 text-sm ${showFilter ? "flex" : "hidden sm:flex"}`}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -96,8 +103,7 @@ function Doctors() {
           ].map((specialty) => (
             <motion.p
               key={specialty}
-              className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${speciality === specialty ? "bg-indigo-100 text-black" : ""
-                }`}
+              className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${speciality === specialty ? "bg-indigo-100 text-black" : ""}`}
               onClick={() => {
                 speciality === specialty
                   ? navigate("/doctors")
@@ -106,20 +112,40 @@ function Doctors() {
               variants={filterVariants}
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.95 }}
-
             >
               {specialty}
             </motion.p>
           ))}
         </motion.div>
 
-        <motion.div
-          className="w-full grid grid-cols-auto gap-4 gap-y-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {filterdoc.length > 0 ? (
+        {isLoading ? (
+          <motion.div
+            className="w-full grid grid-cols-auto gap-4 gap-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {Array(6)
+              .fill()
+              .map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  <SkeletonCard />
+                </motion.div>
+              ))}
+          </motion.div>
+        ) : filterdoc.length === 0 ? (
+          <DoctorNotFound />
+        ) : (
+          <motion.div
+            className="w-full grid grid-cols-auto gap-4 gap-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <AnimatePresence>
               {filterdoc.map((item, index) => (
                 <motion.div
@@ -173,20 +199,8 @@ function Doctors() {
                 </motion.div>
               ))}
             </AnimatePresence>
-          ) : (
-            Array(6)
-              .fill()
-              .map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
-                  <SkeletonCard />
-                </motion.div>
-              ))
-          )}
-        </motion.div>
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );

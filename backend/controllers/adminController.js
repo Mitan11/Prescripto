@@ -72,12 +72,12 @@ const loginAdmin = async (req, res) => {
     try {
         const { email, password } = req.body
         // checking if the email and password are correct
-        if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
+        if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
             // generating a token
-            const token = jwt.sign(email+password,process.env.JWT_SECRET)
-            res.json({success : true , token})
-        }else{
-            res.json({success : false , message : "Invalid credentials"})
+            const token = jwt.sign(email + password, process.env.JWT_SECRET)
+            res.json({ success: true, token })
+        } else {
+            res.json({ success: false, message: "Invalid credentials" })
         }
     } catch (error) {
         console.log(error);
@@ -86,7 +86,7 @@ const loginAdmin = async (req, res) => {
 }
 
 // api to get all appointments for admin dashboard
-const  appointmentAdmin = async (req, res) => {
+const appointmentAdmin = async (req, res) => {
     try {
         // getting all appointments
         const appointments = await appointmentModel.find({});
@@ -112,7 +112,7 @@ const AppointmentCancel = async (req, res) => {
         await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true });
 
         // getting the doctor id and the slot date and time from the appointment data
-        const {docId , slotDate , slotTime} = appointmentData;
+        const { docId, slotDate, slotTime } = appointmentData;
 
         // getting the doctor data
         const doctorData = await doctorModel.findById(docId);
@@ -137,9 +137,9 @@ const AppointmentCancel = async (req, res) => {
 // api to get dashboard data for admin panel
 const adminDashboard = async (req, res) => {
     try {
-        
+
         // getting all doctors
-        const doctors = await doctorModel.find({}); 
+        const doctors = await doctorModel.find({});
 
         // getting all users
         const users = await userModel.find({});
@@ -149,11 +149,11 @@ const adminDashboard = async (req, res) => {
 
         // creating the dashboard data
         const dashData = {
-            doctors : doctors.length,
-            appointments : appointments.length,
-            users : users.length,
-            patients : users.length,
-            latestAppointments : appointments.reverse().slice(0,5)
+            doctors: doctors.length,
+            appointments: appointments.length,
+            users: users.length,
+            patients: users.length,
+            latestAppointments: appointments.reverse().slice(0, 5)
         }
 
         // sending the response
@@ -163,4 +163,24 @@ const adminDashboard = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
-export { addDoctor, loginAdmin, allDoctors, appointmentAdmin, AppointmentCancel, adminDashboard }
+
+// api to remove a doctor
+const removeDoctor = async (req, res) => {
+    try {
+        // getting the doctor id from the body
+        const { docId } = req.body;
+
+        // deleting the doctor
+        await doctorModel.findByIdAndDelete(docId);
+
+        // sending the response
+        res.json({ success: true, message: "Doctor removed successfully" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message })
+    }
+}
+
+
+export { addDoctor, loginAdmin, allDoctors, appointmentAdmin, AppointmentCancel, adminDashboard , removeDoctor}
