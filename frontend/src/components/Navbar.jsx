@@ -1,9 +1,7 @@
 import React from "react";
 import { FloatingNav } from "./ui/floating-navbar";
-import { FaHome, FaUser } from "react-icons/fa";
-import { FaUserDoctor } from "react-icons/fa6";
-import { MdContactSupport } from "react-icons/md";
-import { FcAbout } from "react-icons/fc";
+import { FaHome, FaInfoCircle } from "react-icons/fa";
+import { FaNfcSymbol, FaUserDoctor } from "react-icons/fa6";
 
 function Navbar() {
 
@@ -21,12 +19,12 @@ function Navbar() {
     {
       name: "ABOUT",
       link: "/about",
-      icon: <FcAbout className="h-4 w-4 text-neutral" />,
+      icon: <FaInfoCircle  className="h-4 w-4 text-neutral" />,
     },
     {
       name: "CONTACT",
       link: "/contact",
-      icon: <MdContactSupport  className="h-5 w-5 text-neutral" />,
+      icon: <FaNfcSymbol  className="h-4 w-4 text-neutral" />,
     },
   ];
 

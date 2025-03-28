@@ -79,7 +79,7 @@ function Banner() {
         </motion.div>
 
         <motion.button
-          className="bg-white text-sm sm:text-base text-gray-600 px-8 py-3 rounded-full mt-6"
+          className="bg-white text-sm sm:text-base text-gray-600 px-4 py-3 rounded-full mt-6"
           variants={itemVariants}
           whileHover={{
             scale: 1.05,

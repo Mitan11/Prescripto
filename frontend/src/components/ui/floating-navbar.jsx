@@ -17,7 +17,7 @@ export const FloatingNav = ({
     const logout = () => {
         localStorage.removeItem("token");
         setToken(false);
-        navigate("/login");
+        // navigate("/login");
     };
 
     const dropdownVariants = {

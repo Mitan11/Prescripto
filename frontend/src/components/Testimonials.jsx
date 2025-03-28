@@ -250,7 +250,7 @@ export default function Testimonials({
                                                 <div>
                                                     <h4 className="font-semibold text-gray-800">{review.user?.name || 'Anonymous'}</h4>
                                                     <p className="text-sm text-gray-600">
-                                                        Patient of Dr. {review.doctor?.name}
+                                                        Patient of {review.doctor?.name}
                                                     </p>
                                                 </div>
                                             </div>

@@ -32,7 +32,7 @@ function Header() {
   const { doctors } = useContext(AppContext);
 
   // Get the first available doctor for showcase
-  const featuredDoctor = doctors && doctors.length > 0 ? doctors[0] : null;
+  const featuredDoctor = doctors && doctors.length > 0 ? doctors[1] : null;
 
   return (
     <motion.div
