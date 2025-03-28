@@ -40,6 +40,7 @@ function Contact() {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.2 }}
+      className="mt-[100px]"
     >
       {/* Heading */}
       <motion.div

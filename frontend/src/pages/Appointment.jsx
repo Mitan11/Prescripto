@@ -179,6 +179,7 @@ function Appointment() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
+      className="mt-[100px]"
     >
       {/* Doctor Details */}
       <AnimatePresence mode="wait">

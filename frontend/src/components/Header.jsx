@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { motion } from "framer-motion";
-import { assets } from "../assets/assets";
 import { AnimatedTooltip } from "./ui/animated-tooltip";
 import { AppContext } from "../context/AppContext";
 import { Link } from "react-router";
@@ -37,7 +36,7 @@ function Header() {
 
   return (
     <motion.div
-      className="relative overflow-hidden bg-gradient-to-br from-primary to-primary/80 rounded-2xl shadow-xl px-6 md:px-10 lg:px-16 py-8 md:py-12"
+      className="relative mt-16 overflow-hidden bg-gradient-to-br from-primary to-primary/80 rounded-2xl shadow-xl px-6 md:px-10 lg:px-16 py-8 md:py-12"
       initial="hidden"
       animate="visible"
       variants={{

@@ -39,7 +39,7 @@ function About() {
     <div>
       {/* About Us Heading */}
       <motion.div
-        className="text-center text-2xl text-gray-500"
+        className="text-center mt-[100px] text-2xl text-gray-500"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ amount: 0.2 }}

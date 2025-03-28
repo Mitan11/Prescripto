@@ -271,7 +271,7 @@ function MyAppointments() {
   return (
     <div>
       <motion.p
-        className="pb-4 font-medium text-zinc-700 border-b"
+        className="pb-4 font-medium text-zinc-700 border-b mt-[100px]"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}

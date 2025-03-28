@@ -65,7 +65,7 @@ function MyProfile() {
 
   return (
     <motion.div
-      className="max-w-lg w-full flex flex-col gap-2 text-sm sm:text-base md:text-lg"
+      className="max-w-lg w-full flex flex-col gap-2 text-sm sm:text-base md:text-lg mt-[100px]"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
