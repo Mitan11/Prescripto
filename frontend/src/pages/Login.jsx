@@ -19,6 +19,10 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    document.title = `Prescripto | ${state}`;
+  }, [state]);
+
   const validateForm = () => {
     let isValid = true;
     const newErrors = { email: "", password: "", name: "" };

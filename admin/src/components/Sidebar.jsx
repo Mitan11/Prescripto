@@ -60,6 +60,11 @@ function Sidebar() {
             icon={assets.appointment_icon}
             text="Appointments"
           />
+            <NavItem
+              to="/doctor-reviews"
+              icon={assets.comments_regular}
+              text="Reviews"
+            />
           <NavItem
             to="/doctor-profile"
             icon={assets.add_icon}

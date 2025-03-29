@@ -7,6 +7,11 @@ import { FaStar } from "react-icons/fa";
 import DoctorNotFound from "../components/DoctorNotFound";
 
 function Doctors() {
+
+  useEffect(() => {
+    document.title = "Prescripto | Doctors";
+  }, []);
+
   const { speciality } = useParams();
   const { doctors } = useContext(AppContext);
   const navigate = useNavigate();

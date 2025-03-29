@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { assets } from "../assets/assets";
 import ContactForm from "../components/ContactForm";
 import { FaWhatsapp } from "react-icons/fa";
 
 function Contact() {
+
+  useEffect(() => {
+    document.title = "Prescripto | Contact";
+  }, []);
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },

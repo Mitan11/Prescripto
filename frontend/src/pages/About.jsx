@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { assets } from "../assets/assets";
 import AboutImagesSection from "../components/AboutImagesSection";
 
 function About() {
+
+  useEffect(() => {
+    document.title = "Prescripto | About";
+  }, []);
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },

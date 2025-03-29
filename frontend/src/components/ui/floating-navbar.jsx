@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { motion } from 'motion/react'
 import { cn } from "../../lib/utils";
 import { NavLink, useNavigate } from "react-router";
 import { AppContext } from "../../context/AppContext";

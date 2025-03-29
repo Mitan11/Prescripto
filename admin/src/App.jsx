@@ -13,6 +13,7 @@ import { DoctorContext } from "./context/DoctorContext";
 import DoctorDashboard from "./pages/Doctor/DoctorDashboard";
 import DoctorProfile from "./pages/Doctor/DoctorProfile";
 import DoctorAppointment from "./pages/Doctor/DoctorAppointment";
+import DoctorReviews from "./pages/Doctor/DoctorReviews";
 
 function App() {
   const { aToken } = useContext(AdminContext);
@@ -45,7 +46,7 @@ function App() {
           <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
           <Route path="/doctor-profile" element={<DoctorProfile />} />
           <Route path="/doctor-appointment" element={<DoctorAppointment />} />
-          <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+          <Route path="/doctor-reviews" element={<DoctorReviews />} />
           <Route path="/doctor-profile" element={<DoctorProfile />} />
           <Route
             path="/doctor-appointment"

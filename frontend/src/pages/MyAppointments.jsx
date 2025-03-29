@@ -8,6 +8,11 @@ import MyAppointmentskeleton from "../components/MyAppointmentskeleton";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 function MyAppointments() {
+
+  useEffect(() => {
+    document.title = "Prescripto | My Appointments";
+  }, []);
+
   const { token, backendUrl, getDoctorsData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);

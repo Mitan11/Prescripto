@@ -1,7 +1,6 @@
 import express from "express";
-import { doctorList, loginDoctor, appointmentsDoctor, appointmentCompleted, appointmentCancelled, doctorDashboard, doctorProfile, updateDoctorProfile } from "../controllers/doctorController.js";
+import { doctorList, loginDoctor, appointmentsDoctor, appointmentCompleted, appointmentCancelled, doctorDashboard, doctorProfile, updateDoctorProfile, doctorReviews, deleteDoctorReview } from "../controllers/doctorController.js";
 import authDoctor from "../middlewares/authDoctor.js";
-
 // doctor router
 const doctorRouter = express.Router();
 
@@ -28,5 +27,11 @@ doctorRouter.get("/profile", authDoctor, doctorProfile);
 
 // api to update the doctor profile
 doctorRouter.post("/update-profile", authDoctor, updateDoctorProfile);
+
+// api to get the doctor reviews
+doctorRouter.get("/reviews", authDoctor, doctorReviews);
+
+// api to delete the doctor review
+doctorRouter.post("/delete-review", authDoctor, deleteDoctorReview);
 
 export default doctorRouter;

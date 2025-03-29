@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../components/Header'
 import SpecialityMenu from '../components/SpecialityMenu'
 import TopDoctors from '../components/TopDoctors'
@@ -7,6 +7,11 @@ import { motion } from 'framer-motion'
 import Testimonials from '../components/Testimonials'
 
 function Home() {
+
+  useEffect(() => {
+    document.title = "Prescripto | Home";
+  }, []);
+  
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} >
       <Header />

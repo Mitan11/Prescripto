@@ -22,7 +22,7 @@ function DoctorsList() {
   const deleteDoctor = async (docId) => {
     try {
 
-      if (confirm("confirm you want to delete")) {
+      if (confirm("Are you sure you want to delete this doctor?")) {
         const { data } = await axios.post(backendUrl + "/api/admin/remove-doctor", { docId }, { headers: { aToken } })
         if (data.success) {
           toast.success(data.message)

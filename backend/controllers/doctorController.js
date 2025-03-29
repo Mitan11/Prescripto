@@ -2,6 +2,7 @@ import doctorModel from "../models/doctorModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import appointmentModel from "../models/appointmentModel.js";
+import reviewModel from "../models/reviewModel.js";
 
 // api to change the availability of a doctor
 const changeAvailability = async (req, res) => {
@@ -216,4 +217,36 @@ const updateDoctorProfile = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
-export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentCompleted, appointmentCancelled, doctorDashboard, doctorProfile, updateDoctorProfile };
+
+// api to get the doctor reviews
+const doctorReviews = async (req, res) => {
+    try {
+        const { docId } = req.body
+        
+        // getting the reviews
+        const reviews = await reviewModel.find({ doctor: docId }).populate("user").populate("doctor")
+        
+        // sending the response
+        res.json({ success: true, reviews })
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// api to delete the doctor review
+const deleteDoctorReview = async (req, res) => {
+    try {
+        const { reviewId } = req.body
+
+        // deleting the review
+        await reviewModel.findByIdAndDelete(reviewId)
+
+        res.json({ success: true, message: "Review deleted successfully" })
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentCompleted, appointmentCancelled, doctorDashboard, doctorProfile, updateDoctorProfile, doctorReviews, deleteDoctorReview     };

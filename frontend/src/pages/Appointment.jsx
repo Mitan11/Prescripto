@@ -14,6 +14,11 @@ import axios from "axios";
 import { FaStar } from "react-icons/fa";
 
 function Appointment() {
+
+  useEffect(() => {
+    document.title = "Prescripto | Appointment";
+  }, []);
+  
   const { docId } = useParams();
   const { doctors, currencySymbol, backendUrl, token, getDoctorsData } =
     useContext(AppContext);
